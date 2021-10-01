@@ -12,19 +12,22 @@ import android.os.PowerManager
 import android.telecom.Call
 import android.telecom.CallAudioState
 import android.view.WindowManager
+import androidx.lifecycle.ViewModelProvider
 import com.simplemobiletools.commons.extensions.*
 import com.simplemobiletools.commons.helpers.MINUTE_SECONDS
 import com.simplemobiletools.commons.helpers.isOreoMr1Plus
 import com.simplemobiletools.commons.helpers.isOreoPlus
 import com.simplemobiletools.dialer.App
+import com.simplemobiletools.dialer.MainViewModel
+import com.simplemobiletools.dialer.MainViewModelFactory
 import com.simplemobiletools.dialer.R
 import com.simplemobiletools.dialer.extensions.addCharacter
 import com.simplemobiletools.dialer.extensions.audioManager
 import com.simplemobiletools.dialer.extensions.config
 import com.simplemobiletools.dialer.extensions.getHandleToUse
-import com.simplemobiletools.dialer.helpers.CallContactAvatarHelper
-import com.simplemobiletools.dialer.helpers.CallManager
+import com.simplemobiletools.dialer.helpers.*
 import com.simplemobiletools.dialer.models.CallContact
+import com.simplemobiletools.dialer.services.TrueCallerService
 import kotlinx.android.synthetic.main.activity_call.*
 import kotlinx.android.synthetic.main.dialpad.*
 
@@ -46,13 +49,17 @@ class CallActivity : SimpleActivity() {
     private val callContactAvatarHelper by lazy { CallContactAvatarHelper(this) }
     private val callDurationHelper by lazy { (application as App).callDurationHelper }
 
+    private lateinit var viewModel: MainViewModel
+
     override fun onCreate(savedInstanceState: Bundle?) {
+
         supportActionBar?.hide()
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_call)
 
         updateTextColors(call_holder)
         initButtons()
+        val networkConnectionInterceptor = NetworkConnectionInterceptor(this)
 
         audioManager.mode = AudioManager.MODE_IN_CALL
 
@@ -60,7 +67,7 @@ class CallActivity : SimpleActivity() {
             callContact = contact
             val avatar = callContactAvatarHelper.getCallContactAvatar(contact)
             runOnUiThread {
-                updateOtherPersonsInfo(avatar)
+                updateOtherPersonsInfo(avatar,networkConnectionInterceptor)
                 checkCalledSIMCard()
             }
         }
@@ -176,7 +183,7 @@ class CallActivity : SimpleActivity() {
         }
     }
 
-    private fun updateOtherPersonsInfo(avatar: Bitmap?) {
+    private fun updateOtherPersonsInfo(avatar: Bitmap?,networkConnectionInterceptor: NetworkConnectionInterceptor) {
         if (callContact == null) {
             return
         }
@@ -185,7 +192,24 @@ class CallActivity : SimpleActivity() {
         if (callContact!!.number.isNotEmpty() && callContact!!.number != callContact!!.name) {
             caller_number_label.text = callContact!!.number
         } else {
-            caller_number_label.beGone()
+            val trueCallerService = TrueCallerService()
+            val authorizationToken = "Bearer "+ this.config.getTrueCallerToken()
+            val viewModelFactory = MainViewModelFactory(trueCallerService)
+            viewModel = ViewModelProvider(this, viewModelFactory).get(MainViewModel::class.java)
+            viewModel.getResponse(callContact!!.number, authorizationToken, networkConnectionInterceptor)
+            viewModel.myResponse.observe(this, { response ->
+                if (response.isSuccessful) {
+                    if (response.body()?.name!! == NO_INTERNET) {
+                        caller_number_label.beGone() //No Internet
+                    } else {
+                        val name = TRUECALLER + response.body()?.name!!
+                        caller_name_label.text = name
+                        caller_number_label.text = callContact!!.number
+                    }
+                } else {
+                    caller_number_label.beGone() //No response from truecaller
+                }
+            })
         }
 
         if (avatar != null) {

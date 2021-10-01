@@ -19,6 +19,10 @@
     <!-- Dialpad -->
     <string name="dialpad">拨号盘</string>
 
+    <!-- TrueCaller auth Token -->
+    <string name="truecaller_auth_token">Truecaller Auth Token</string>
+    <string name="token">Token</string>
+
     <!-- Dialer -->
     <string name="dialer">拨号器</string>
     <string name="accept">接听</string>

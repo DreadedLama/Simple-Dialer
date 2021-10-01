@@ -36,7 +36,7 @@ android {
             applicationIdSuffix ".debug"
         }
         release {
-            minifyEnabled true
+            minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             if (keystorePropertiesFile.exists()) {
                 signingConfig signingConfigs.release
@@ -57,4 +57,16 @@ android {
 dependencies {
     implementation 'com.github.SimpleMobileTools:Simple-Commons:3c6e3cd0fd'
     implementation 'com.github.tibbi:IndicatorFastScroll:c3de1d040a'
+
+    implementation 'com.squareup.okhttp3:okhttp:5.0.0-alpha.2'
+
+    // Retrofit
+    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.6.0'
+    implementation 'com.squareup.okhttp3:logging-interceptor:4.5.0'
+
+    //Coroutines
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.0'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.4.1'
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.1'
 }

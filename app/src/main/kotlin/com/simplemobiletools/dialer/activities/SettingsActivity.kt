@@ -38,6 +38,7 @@ class SettingsActivity : SimpleActivity() {
         setupStartNameWithSurname()
         setupShowCallConfirmation()
         setupDisableProximitySensor()
+        setupTruecallerAuthToken()
         updateTextColors(settings_holder)
         invalidateOptionsMenu()
     }
@@ -93,6 +94,13 @@ class SettingsActivity : SimpleActivity() {
     private fun setupChangeDateTimeFormat() {
         settings_change_date_time_format_holder.setOnClickListener {
             ChangeDateTimeFormatDialog(this) {}
+        }
+    }
+
+    private fun setupTruecallerAuthToken() {
+        settings_truecaller_auth_token_holder.setOnClickListener {
+            SaveTrueCallerTokenActivity(this) {
+            }
         }
     }
 

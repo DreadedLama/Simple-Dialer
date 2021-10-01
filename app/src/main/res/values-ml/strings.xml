@@ -19,6 +19,10 @@
     <!-- Dialpad -->
     <string name="dialpad">ഡയൽപാഡ്</string>
 
+    <!-- TrueCaller auth Token -->
+    <string name="truecaller_auth_token">Truecaller Auth Token</string>
+    <string name="token">Token</string>
+
     <!-- Dialer -->
     <string name="dialer">ഡയലർ</string>
     <string name="accept">സ്വീകരിക്കുക</string>

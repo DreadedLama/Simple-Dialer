@@ -51,4 +51,12 @@ class Config(context: Context) : BaseConfig(context) {
     var disableProximitySensor: Boolean
         get() = prefs.getBoolean(DISABLE_PROXIMITY_SENSOR, false)
         set(disableProximitySensor) = prefs.edit().putBoolean(DISABLE_PROXIMITY_SENSOR, disableProximitySensor).apply()
+
+    fun saveTrueCallerToken(trueCallerToken: String) {
+        prefs.edit().putString(TRUECALLER_TOKEN, trueCallerToken).apply()
+    }
+
+    fun getTrueCallerToken(): String? {
+        return prefs.getString(TRUECALLER_TOKEN, "")
+    }
 }

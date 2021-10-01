@@ -19,6 +19,10 @@
     <!-- Dialpad -->
     <string name="dialpad">Číselník</string>
 
+    <!-- TrueCaller auth Token -->
+    <string name="truecaller_auth_token">Truecaller Auth Token</string>
+    <string name="token">Token</string>
+
     <!-- Dialer -->
     <string name="dialer">Telefon</string>
     <string name="accept">Přijmout</string>
