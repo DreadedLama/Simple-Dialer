@@ -9,7 +9,8 @@ You can easily block phone numbers to avoid unwanted incoming calls.
 
 Supported Speed dialing makes calling your favorite contacts with this true phone a breeze.
 
-It comes with material design and dark theme by default, provides great user experience for easy usage. The lack of internet access gives you more privacy, security and stability than other apps.
+It comes with material design and dark theme by default, provides great user experience for easy usage.
+###### It uses internet only when using truecaller api to fetch caller details. Use of truecaller to fetch details is completely optional. App works perfectly well without internet too.
 
 Contains no ads or unnecessary permissions. It is fully opensource, provides customizable colors.
 
@@ -29,4 +30,27 @@ https://www.reddit.com/r/SimpleMobileTools
 <img alt="App image" src="fastlane/metadata/android/en-US/images/phoneScreenshots/english/1.jpg" width="30%">
 <img alt="App image" src="fastlane/metadata/android/en-US/images/phoneScreenshots/english/2.jpg" width="30%">
 <img alt="App image" src="fastlane/metadata/android/en-US/images/phoneScreenshots/english/3.jpg" width="30%">
+</div>
+
+### Getting Truecaller auth token
+
+(Tested with truecaller app version - 11.81.7)
+
+Go to Truecaller app settings -> Privacy Center -> Download my data
+Download the json file and open it.
+
+Token is the value of key "id". It will look similar to -
+```` 
+a1i01--TQkyvDkO-VW8akLyvbyPBFxr11Fi_KOD1Sv1RGv7UPMJV-KU9C62xo4nd
+```` 
+
+
+Input this auth token in Simple Dialer app.
+Settings -> Truecaller Auth Token
+
+Once token is added, in subsequent calls(incoming/outgoing), simple dialer will make truecaller api call and display the name of the caller.
+
+<div style="display:flex;">
+<img alt="App image" src="fastlane/metadata/android/en-US/images/raw_screenshots/app_5.jpg" width="30%">
+<img alt="App image" src="fastlane/metadata/android/en-US/images/raw_screenshots/app_6.jpg" width="30%">
 </div>
