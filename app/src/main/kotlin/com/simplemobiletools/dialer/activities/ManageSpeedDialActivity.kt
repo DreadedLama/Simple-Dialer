@@ -3,6 +3,7 @@ package com.simplemobiletools.dialer.activities
 import android.os.Bundle
 import com.google.gson.Gson
 import com.simplemobiletools.commons.extensions.updateTextColors
+import com.simplemobiletools.commons.helpers.NavigationIcon
 import com.simplemobiletools.commons.helpers.SimpleContactsHelper
 import com.simplemobiletools.commons.models.SimpleContact
 import com.simplemobiletools.dialer.R
@@ -18,8 +19,12 @@ class ManageSpeedDialActivity : SimpleActivity(), RemoveSpeedDialListener {
     private var speedDialValues = ArrayList<SpeedDial>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        isMaterialActivity = true
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_manage_speed_dial)
+
+        updateMaterialActivityViews(manage_speed_dial_coordinator, manage_speed_dial_holder, useTransparentNavigation = true, useTopSearchMenu = false)
+        setupMaterialScrollListener(manage_speed_dial_scrollview, manage_speed_dial_toolbar)
 
         speedDialValues = config.getSpeedDialValues()
         updateAdapter()
@@ -28,6 +33,11 @@ class ManageSpeedDialActivity : SimpleActivity(), RemoveSpeedDialListener {
         }
 
         updateTextColors(manage_speed_dial_scrollview)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        setupToolbar(manage_speed_dial_toolbar, NavigationIcon.Arrow)
     }
 
     override fun onStop() {
@@ -45,7 +55,7 @@ class ManageSpeedDialActivity : SimpleActivity(), RemoveSpeedDialListener {
             SelectContactDialog(this, allContacts) { selectedContact ->
                 speedDialValues.first { it.id == clickedContact.id }.apply {
                     displayName = selectedContact.name
-                    number = selectedContact.phoneNumbers.first()
+                    number = selectedContact.phoneNumbers.first().normalizedNumber
                 }
                 updateAdapter()
             }

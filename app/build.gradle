@@ -9,14 +9,14 @@ if (keystorePropertiesFile.exists()) {
 }
 
 android {
-    compileSdkVersion 30
+    compileSdkVersion 33
 
     defaultConfig {
         applicationId "com.simplemobiletools.dialer"
         minSdkVersion 23
-        targetSdkVersion 30
-        versionCode 27
-        versionName "5.10.0"
+        targetSdkVersion 33
+        versionCode 50
+        versionName "5.17.3"
         setProperty("archivesBaseName", "dialer")
     }
 
@@ -44,6 +44,13 @@ android {
         }
     }
 
+    flavorDimensions "variants"
+    productFlavors {
+        core {}
+        fdroid {}
+        prepaid {}
+    }
+
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
     }
@@ -68,5 +75,8 @@ dependencies {
     //Coroutines
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.0'
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.4.1'
-    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.1'
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1'
+    implementation 'com.github.SimpleMobileTools:Simple-Commons:447adfd5be'
+    implementation 'com.github.tibbi:IndicatorFastScroll:4524cd0b61'
+    implementation 'me.grantland:autofittextview:0.2.1'
 }

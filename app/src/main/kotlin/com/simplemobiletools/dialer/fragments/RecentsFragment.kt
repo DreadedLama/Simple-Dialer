@@ -35,9 +35,9 @@ class RecentsFragment(context: Context, attributeSet: AttributeSet) : MyViewPage
         }
     }
 
-    override fun setupColors(textColor: Int, primaryColor: Int, adjustedPrimaryColor: Int) {
+    override fun setupColors(textColor: Int, primaryColor: Int, properPrimaryColor: Int) {
         recents_placeholder.setTextColor(textColor)
-        recents_placeholder_2.setTextColor(adjustedPrimaryColor)
+        recents_placeholder_2.setTextColor(properPrimaryColor)
 
         (recents_list?.adapter as? RecentCallsAdapter)?.apply {
             initDrawables()
@@ -45,8 +45,8 @@ class RecentsFragment(context: Context, attributeSet: AttributeSet) : MyViewPage
         }
     }
 
-    override fun refreshItems() {
-        val privateCursor = context?.getMyContactsCursor(false, true)?.loadInBackground()
+    override fun refreshItems(callback: (() -> Unit)?) {
+        val privateCursor = context?.getMyContactsCursor(false, true)
         val groupSubsequentCalls = context?.config?.groupSubsequentCalls ?: false
         RecentsHelper(context).getRecentCalls(groupSubsequentCalls) { recents ->
             SimpleContactsHelper(context).getAvailableContacts(false) { contacts ->
@@ -63,7 +63,7 @@ class RecentsFragment(context: Context, attributeSet: AttributeSet) : MyViewPage
                     }
 
                     if (!wasNameFilled) {
-                        val contact = contacts.firstOrNull { it.phoneNumbers.first() == recent.phoneNumber }
+                        val contact = contacts.firstOrNull { it.phoneNumbers.first().normalizedNumber == recent.phoneNumber }
                         if (contact != null) {
                             recent.name = contact.name
                         }
@@ -90,7 +90,7 @@ class RecentsFragment(context: Context, attributeSet: AttributeSet) : MyViewPage
 
             val currAdapter = recents_list.adapter
             if (currAdapter == null) {
-                RecentCallsAdapter(activity as SimpleActivity, recents, recents_list, this) {
+                RecentCallsAdapter(activity as SimpleActivity, recents, recents_list, this, true) {
                     val recentCall = it as RecentCall
                     if (context.config.showCallConfirmation) {
                         CallConfirmationDialog(activity as SimpleActivity, recentCall.name) {
@@ -101,6 +101,10 @@ class RecentsFragment(context: Context, attributeSet: AttributeSet) : MyViewPage
                     }
                 }.apply {
                     recents_list.adapter = this
+                }
+
+                if (context.areSystemAnimationsEnabled) {
+                    recents_list.scheduleLayoutAnimation()
                 }
             } else {
                 (currAdapter as RecentCallsAdapter).updateItems(recents)

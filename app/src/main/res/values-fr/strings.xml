@@ -1,32 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Simple Dialer</string>
+    <string name="app_name">Simple Téléphone</string>
     <string name="app_launcher_name">Téléphone</string>
-    <string name="default_phone_app_prompt">Please make this app the default Phone app</string>
-
+    <string name="default_phone_app_prompt">Veuillez faire de cette application votre application de téléphone par défaut</string>
+    <string name="allow_displaying_over_other_apps">Veuillez permettre l\'affichage sur d\'autres applications pour un comportement fiable</string>
     <!-- Contacts -->
     <string name="could_not_access_contacts">Impossible d\'accéder à vos contacts</string>
-
     <!-- Recents -->
     <string name="no_previous_calls">Aucun appel précédent n\'a été trouvé</string>
     <string name="could_not_access_the_call_history">Impossible d\'accéder à l\'historique des appels</string>
     <string name="request_access">Demande d\'accès</string>
-    <string name="remove_confirmation">Êtes-vous sûr de vouloir effacer de l\'historique les éléments sélectionnés ?</string>
-    <string name="clear_history_confirmation">Êtes-vous sûr de vouloir supprimer votre historique d\'appel ?</string>
-    <string name="send_sms">Envoyer un SMS</string>
+    <string name="remove_confirmation">Êtes-vous sûr(e) de vouloir effacer de l\'historique les éléments sélectionnés \?</string>
+    <string name="clear_history_confirmation">Êtes-vous sûr(e) de vouloir supprimer votre historique d\'appel \?</string>
     <string name="show_grouped_calls">Afficher les appels groupés</string>
     <string name="clear_call_history">Nettoyer l\'historique d\'appel</string>
-
+    <string name="show_call_details">Afficher les détails de l\'appel</string>
     <!-- Dialpad -->
     <string name="dialpad">Pavé numérique</string>
-
     <!-- TrueCaller auth Token -->
     <string name="truecaller_auth_token">Truecaller Auth Token</string>
     <string name="token">Token</string>
 
+    <string name="asterisk">Étoile</string>
+    <string name="hashtag">Dièse</string>
+    <string name="call_number">Numéro d\'appel</string>
+    <string name="dialpad_beeps">Activer les bips lors des clics sur les boutons du clavier numérique</string>
+    <string name="dialpad_vibrations">Activation des vibrations lors des clics sur les boutons du clavier</string>
+>>>>>>> upstream/master
     <!-- Dialer -->
-    <string name="dialer">Compositeur</string>
+    <string name="dialer">Clavier</string>
     <string name="accept">Accepter</string>
+    <string name="accept_call">Accepter l\'appel</string>
     <string name="decline">Décliner</string>
+    <string name="decline_call">Décliner l\'appel</string>
     <string name="unknown_caller">Appelant inconnu</string>
     <string name="is_calling">Appelle…</string>
     <string name="dialing">Numérotation…</string>
@@ -36,47 +42,44 @@
     <string name="select_sim">Sélectionnez une carte SIM pour cet appel</string>
     <string name="always_use_this_sim">Toujours utiliser cette carte SIM pour ce numéro</string>
     <string name="unset_default_sim">Désassocier la SIM par défaut</string>
-
+    <string name="calls">Appels</string>
+    <string name="turn_microphone_on">Activer le microphone</string>
+    <string name="turn_microphone_off">Désactiver le microphone</string>
+    <string name="turn_speaker_on">Activer le haut-parleur</string>
+    <string name="turn_speaker_off">Désactiver le haut-parleur</string>
+    <string name="show_dialpad">Afficher le clavier</string>
+    <string name="hide_dialpad">Masquer le clavier</string>
+    <string name="end_call">Finir l\'appel</string>
+    <string name="hold_call">Mettre l\'appel en attente</string>
+    <string name="resume_call">Reprendre l\'appel</string>
+    <string name="call_on_hold">En attente</string>
+    <string name="call_swap">Permuter les appels</string>
+    <string name="call_merge">Fusionner les appels</string>
+    <string name="call_split">Diviser l\'appel</string>
+    <string name="call_add">Ajouter un appel</string>
+    <string name="conference_manage">Gérer une conférence téléphonique</string>
+    <string name="conference">Conférence</string>
+    <string name="audio_route_speaker">Haut-parleur</string>
+    <string name="audio_route_earpiece">Écouteur</string>
+    <string name="audio_route_bluetooth">Bluetooth</string>
+    <string name="audio_route_wired_headset">Casque filaire</string>
+    <string name="audio_route_wired_or_earpiece">Filaire ou écouteur</string>
+    <string name="choose_audio_route">Choisir la sortie audio</string>
+    <string name="calling_blocked_number">Le numéro que vous appelez est bloqué</string>
     <!-- Speed dial -->
     <string name="speed_dial">Numérotation rapide</string>
     <string name="manage_speed_dial">Gérer la numérotation rapide</string>
     <string name="speed_dial_label">Cliquez sur un numéro pour lui attribuer un contact. Vous pouvez ensuite appeler rapidement le contact donné en appuyant longuement sur le numéro donné sur le pavé numérique.</string>
-
     <!-- Settings -->
     <string name="group_subsequent_calls">Regrouper les appels suivants avec le même numéro dans le journal des appels</string>
-    <string name="open_dialpad_by_default">Open the dialpad by default when the app opens</string>
-    <string name="disable_proximity_sensor">Disable proximity sensor during calls</string>
-
-    <!-- Strings displayed only on Google Playstore. Optional, but good to have -->
-    <!-- App title has to have less than 50 characters. If you cannot squeeze it, just remove a part of it -->
-    <string name="app_title">Simple Dialer - Gérez facilement vos appels</string>
-    <!-- Short description has to have less than 80 chars -->
-    <string name="app_short_description">Un gestionnaire d\'appels pratique, avec blocage de numéro et gestion multi-SIM</string>
-    <string name="app_long_description">
-        Une application légère pour gérer vos appels, où que vous soyez. Fourni avec un journal d\'appels pratique pour initier facilement des appels.
-
-        Il y a aussi un clavier de numérotation rapide à votre service, avec une suggestion intelligente des contacts, qui prend également en charge les lettres.
-
-        Vous pouvez facilement bloquer des numéros pour éviter les appels entrants indésirables.
-
-        La numérotation rapide vous permet d\'appeler vos contacts préférés en un clin d\'oeil.
-
-        Pour vous aider à gérer rapidement vos appels, l\'application prend également en charge les contacts favoris et la création de raccourcis vers n\'importe quel contact sur l\'écran d\'accueil.
-
-        Avec un Material Design et un thème sombre par défaut, elle offre une excellente expérience utilisateur pour une utilisation facile. L\'absence d\'accès à internet vous donne plus de confidentialité, de sécurité et de stabilité que les autres applications.
-
-        Ne contient aucune publicité ou autorisation inutile. Elle est entièrement open source, avec des couleurs personnalisables.
-
-        <b>Découvrez la suite complète des applications Simple Mobile Tools ici :</b>
-        https://www.simplemobiletools.com
-
-        <b>Facebook :</b>
-        https://www.facebook.com/simplemobiletools
-
-        <b>Reddit :</b>
-        https://www.reddit.com/r/SimpleMobileTools
-    </string>
-
+    <string name="open_dialpad_by_default">Ouvrir le pavé numérique par défaut à l\'ouverture de l\'application</string>
+    <string name="disable_proximity_sensor">Désactiver le capteur de proximité pendant les appels</string>
+    <string name="disable_swipe_to_answer">Remplacer le balayage pour répondre aux appels entrants par un clic</string>
+    <string name="show_incoming_calls_full_screen">Toujours afficher les appels entrants en plein écran</string>
+    <string name="hide_dialpad_numbers">Masquer les numéros du clavier</string>
+    <!-- FAQ -->
+    <string name="faq_1_title">J\'entends les appels entrants, mais l\'écran ne s\'allume pas. Que puis-je faire \?</string>
+    <string name="faq_1_text">Ces problèmes peuvent avoir de nombreuses raisons spécifiques à l\'appareil et au système, il est difficile d\'en parler en général. Vous devriez consulter les paramètres de votre appareil et vous assurer que l\'application est autorisée à apparaître en arrière-plan et à s\'afficher au-dessus des autres applications.</string>
     <!--
         Haven't found some strings? There's more at
         https://github.com/SimpleMobileTools/Simple-Commons/tree/master/commons/src/main/res

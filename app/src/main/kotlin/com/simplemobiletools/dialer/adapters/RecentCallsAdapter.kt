@@ -6,31 +6,34 @@ import android.provider.CallLog.Calls
 import android.text.SpannableString
 import android.text.TextUtils
 import android.util.TypedValue
-import android.view.Menu
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
+import android.widget.PopupMenu
 import com.bumptech.glide.Glide
 import com.simplemobiletools.commons.adapters.MyRecyclerViewAdapter
 import com.simplemobiletools.commons.dialogs.ConfirmationDialog
+import com.simplemobiletools.commons.dialogs.FeatureLockedDialog
 import com.simplemobiletools.commons.extensions.*
 import com.simplemobiletools.commons.helpers.*
+import com.simplemobiletools.commons.models.SimpleContact
 import com.simplemobiletools.commons.views.MyRecyclerView
 import com.simplemobiletools.dialer.R
+import com.simplemobiletools.dialer.activities.MainActivity
 import com.simplemobiletools.dialer.activities.SimpleActivity
 import com.simplemobiletools.dialer.dialogs.ShowGroupedCallsDialog
-import com.simplemobiletools.dialer.extensions.areMultipleSIMsAvailable
-import com.simplemobiletools.dialer.extensions.callContactWithSim
-import com.simplemobiletools.dialer.extensions.config
+import com.simplemobiletools.dialer.extensions.*
 import com.simplemobiletools.dialer.helpers.RecentsHelper
 import com.simplemobiletools.dialer.interfaces.RefreshItemsListener
 import com.simplemobiletools.dialer.models.RecentCall
 import kotlinx.android.synthetic.main.item_recent_call.view.*
-import java.util.*
 
 class RecentCallsAdapter(
-    activity: SimpleActivity, var recentCalls: ArrayList<RecentCall>, recyclerView: MyRecyclerView, val refreshItemsListener: RefreshItemsListener?,
+    activity: SimpleActivity,
+    var recentCalls: ArrayList<RecentCall>,
+    recyclerView: MyRecyclerView,
+    private val refreshItemsListener: RefreshItemsListener?,
+    private val showOverflowMenu: Boolean,
     itemClick: (Any) -> Unit
-) : MyRecyclerViewAdapter(activity, recyclerView, null, itemClick) {
+) : MyRecyclerViewAdapter(activity, recyclerView, itemClick) {
 
     private lateinit var outgoingCallIcon: Drawable
     private lateinit var incomingCallIcon: Drawable
@@ -39,6 +42,7 @@ class RecentCallsAdapter(
     private val areMultipleSIMsAvailable = activity.areMultipleSIMsAvailable()
     private val redColor = resources.getColor(R.color.md_red_700)
     private var textToHighlight = ""
+    private var durationPadding = resources.getDimension(R.dimen.normal_margin).toInt()
 
     init {
         initDrawables()
@@ -58,10 +62,12 @@ class RecentCallsAdapter(
             findItem(R.id.cab_call_sim_2).isVisible = hasMultipleSIMs && isOneItemSelected
             findItem(R.id.cab_remove_default_sim).isVisible = isOneItemSelected && activity.config.getCustomSIM(selectedNumber) != ""
 
+            findItem(R.id.cab_block_number).title = activity.addLockedLabelIfNeeded(R.string.block_number)
             findItem(R.id.cab_block_number).isVisible = isNougatPlus()
             findItem(R.id.cab_add_number).isVisible = isOneItemSelected
             findItem(R.id.cab_copy_number).isVisible = isOneItemSelected
-            findItem(R.id.cab_show_grouped_calls).isVisible = isOneItemSelected && selectedItems.first().neighbourIDs.isNotEmpty()
+            findItem(R.id.cab_show_call_details).isVisible = isOneItemSelected
+            findItem(R.id.cab_view_details).isVisible = isOneItemSelected && findContactByCall(selectedItems.first()) != null
         }
     }
 
@@ -74,13 +80,14 @@ class RecentCallsAdapter(
             R.id.cab_call_sim_1 -> callContact(true)
             R.id.cab_call_sim_2 -> callContact(false)
             R.id.cab_remove_default_sim -> removeDefaultSIM()
-            R.id.cab_block_number -> askConfirmBlock()
+            R.id.cab_block_number -> tryBlocking()
             R.id.cab_add_number -> addNumberToContact()
             R.id.cab_send_sms -> sendSMS()
-            R.id.cab_show_grouped_calls -> showGroupedCalls()
+            R.id.cab_show_call_details -> showCallDetails()
             R.id.cab_copy_number -> copyNumber()
             R.id.cab_remove -> askConfirmRemove()
             R.id.cab_select_all -> selectAll()
+            R.id.cab_view_details -> launchContactDetailsIntent(findContactByCall(getSelectedItems().first()))
         }
     }
 
@@ -116,8 +123,8 @@ class RecentCallsAdapter(
     }
 
     fun initDrawables() {
-        outgoingCallIcon = resources.getColoredDrawableWithColor(R.drawable.ic_outgoing_call_vector, baseConfig.textColor)
-        incomingCallIcon = resources.getColoredDrawableWithColor(R.drawable.ic_incoming_call_vector, baseConfig.textColor)
+        outgoingCallIcon = resources.getColoredDrawableWithColor(R.drawable.ic_outgoing_call_vector, activity.getProperTextColor())
+        incomingCallIcon = resources.getColoredDrawableWithColor(R.drawable.ic_incoming_call_vector, activity.getProperTextColor())
         incomingMissedCallIcon = resources.getColoredDrawableWithColor(R.drawable.ic_incoming_call_vector, redColor)
     }
 
@@ -126,10 +133,23 @@ class RecentCallsAdapter(
         activity.callContactWithSim(phoneNumber, useSimOne)
     }
 
+    private fun callContact() {
+        val phoneNumber = getSelectedPhoneNumber() ?: return
+        (activity as SimpleActivity).startCallIntent(phoneNumber)
+    }
+
     private fun removeDefaultSIM() {
         val phoneNumber = getSelectedPhoneNumber() ?: return
         activity.config.removeCustomSIM("tel:$phoneNumber")
         finishActMode()
+    }
+
+    private fun tryBlocking() {
+        if (activity.isOrWasThankYouInstalled()) {
+            askConfirmBlock()
+        } else {
+            FeatureLockedDialog(activity) { }
+        }
     }
 
     private fun askConfirmBlock() {
@@ -179,7 +199,7 @@ class RecentCallsAdapter(
         activity.launchSendSMSIntent(recipient)
     }
 
-    private fun showGroupedCalls() {
+    private fun showCallDetails() {
         val recentCall = getSelectedItems().firstOrNull() ?: return
         val callIds = recentCall.neighbourIDs.map { it }.toMutableList() as ArrayList<Int>
         callIds.add(recentCall.id)
@@ -226,6 +246,16 @@ class RecentCallsAdapter(
         }
     }
 
+    private fun findContactByCall(recentCall: RecentCall): SimpleContact? {
+        return (activity as MainActivity).cachedContacts.find { it.name == recentCall.name && it.doesHavePhoneNumber(recentCall.phoneNumber) }
+    }
+
+    private fun launchContactDetailsIntent(contact: SimpleContact?) {
+        if (contact != null) {
+            activity.startContactDetailsIntent(contact)
+        }
+    }
+
     fun updateItems(newItems: ArrayList<RecentCall>, highlightText: String = "") {
         if (newItems.hashCode() != recentCalls.hashCode()) {
             recentCalls = newItems.clone() as ArrayList<RecentCall>
@@ -244,14 +274,23 @@ class RecentCallsAdapter(
 
     private fun setupView(view: View, call: RecentCall) {
         view.apply {
-            item_recents_frame.isSelected = selectedKeys.contains(call.id)
+            item_recents_holder.isSelected = selectedKeys.contains(call.id)
             var nameToShow = SpannableString(call.name)
+            if (call.specificType.isNotEmpty()) {
+                nameToShow = SpannableString("${call.name} - ${call.specificType}")
+
+                // show specific number at "Show call details" dialog too
+                if (refreshItemsListener == null) {
+                    nameToShow = SpannableString("${call.name} - ${call.specificType}, ${call.specificNumber}")
+                }
+            }
+
             if (call.neighbourIDs.isNotEmpty()) {
                 nameToShow = SpannableString("$nameToShow (${call.neighbourIDs.size + 1})")
             }
 
             if (textToHighlight.isNotEmpty() && nameToShow.contains(textToHighlight, true)) {
-                nameToShow = SpannableString(nameToShow.toString().highlightTextPart(textToHighlight, adjustedPrimaryColor))
+                nameToShow = SpannableString(nameToShow.toString().highlightTextPart(textToHighlight, properPrimaryColor))
             }
 
             item_recents_name.apply {
@@ -271,11 +310,14 @@ class RecentCallsAdapter(
                 setTextColor(textColor)
                 beVisibleIf(call.type != Calls.MISSED_TYPE && call.type != Calls.REJECTED_TYPE && call.duration > 0)
                 setTextSize(TypedValue.COMPLEX_UNIT_PX, fontSize * 0.8f)
+                if (!showOverflowMenu) {
+                    item_recents_duration.setPadding(0, 0, durationPadding, 0)
+                }
             }
 
-            item_recents_sim_image.beVisibleIf(areMultipleSIMsAvailable)
-            item_recents_sim_id.beVisibleIf(areMultipleSIMsAvailable)
-            if (areMultipleSIMsAvailable) {
+            item_recents_sim_image.beVisibleIf(areMultipleSIMsAvailable && call.simID != -1)
+            item_recents_sim_id.beVisibleIf(areMultipleSIMsAvailable && call.simID != -1)
+            if (areMultipleSIMsAvailable && call.simID != -1) {
                 item_recents_sim_image.applyColorFilter(textColor)
                 item_recents_sim_id.setTextColor(textColor.getContrastColor())
                 item_recents_sim_id.text = call.simID.toString()
@@ -290,6 +332,105 @@ class RecentCallsAdapter(
             }
 
             item_recents_type.setImageDrawable(drawable)
+
+            overflow_menu_icon.beVisibleIf(showOverflowMenu)
+            if (showOverflowMenu) {
+                overflow_menu_icon.drawable.apply {
+                    mutate()
+                    setTint(activity.getProperTextColor())
+                }
+                overflow_menu_icon.setOnClickListener {
+                    showPopupMenu(overflow_menu_anchor, call)
+                }
+            }
         }
+    }
+
+    private fun showPopupMenu(view: View, call: RecentCall) {
+        finishActMode()
+        val theme = activity.getPopupMenuTheme()
+        val contextTheme = ContextThemeWrapper(activity, theme)
+        val contact = findContactByCall(call)
+        val selectedNumber = "tel:${call.phoneNumber}"
+
+        PopupMenu(contextTheme, view, Gravity.END).apply {
+            inflate(R.menu.menu_recent_item_options)
+            menu.apply {
+                val areMultipleSIMsAvailable = activity.areMultipleSIMsAvailable()
+                findItem(R.id.cab_call).isVisible = !areMultipleSIMsAvailable
+                findItem(R.id.cab_call_sim_1).isVisible = areMultipleSIMsAvailable
+                findItem(R.id.cab_call_sim_2).isVisible = areMultipleSIMsAvailable
+                findItem(R.id.cab_view_details).isVisible = contact != null
+                findItem(R.id.cab_block_number).title = activity.addLockedLabelIfNeeded(R.string.block_number)
+                findItem(R.id.cab_block_number).isVisible = isNougatPlus()
+                findItem(R.id.cab_remove_default_sim).isVisible = activity.config.getCustomSIM(selectedNumber) != ""
+            }
+            setOnMenuItemClickListener { item ->
+                val callId = call.id
+                when (item.itemId) {
+                    R.id.cab_call -> {
+                        executeItemMenuOperation(callId) {
+                            callContact()
+                        }
+                    }
+                    R.id.cab_call_sim_1 -> {
+                        executeItemMenuOperation(callId) {
+                            callContact(true)
+                        }
+                    }
+                    R.id.cab_call_sim_2 -> {
+                        executeItemMenuOperation(callId) {
+                            callContact(false)
+                        }
+                    }
+                    R.id.cab_send_sms -> {
+                        executeItemMenuOperation(callId) {
+                            sendSMS()
+                        }
+                    }
+                    R.id.cab_view_details -> {
+                        executeItemMenuOperation(callId) {
+                            launchContactDetailsIntent(contact)
+                        }
+                    }
+                    R.id.cab_add_number -> {
+                        executeItemMenuOperation(callId) {
+                            addNumberToContact()
+                        }
+                    }
+                    R.id.cab_show_call_details -> {
+                        executeItemMenuOperation(callId) {
+                            showCallDetails()
+                        }
+                    }
+                    R.id.cab_block_number -> {
+                        selectedKeys.add(callId)
+                        tryBlocking()
+                    }
+                    R.id.cab_remove -> {
+                        selectedKeys.add(callId)
+                        askConfirmRemove()
+                    }
+                    R.id.cab_copy_number -> {
+                        executeItemMenuOperation(callId) {
+                            copyNumber()
+                        }
+                    }
+                    R.id.cab_remove_default_sim -> {
+                        executeItemMenuOperation(callId) {
+                            removeDefaultSIM()
+                        }
+                    }
+                }
+                true
+            }
+            show()
+        }
+    }
+
+    private fun executeItemMenuOperation(callId: Int, callback: () -> Unit) {
+        selectedKeys.add(callId)
+        callback()
+        selectedKeys.remove(callId)
     }
 }

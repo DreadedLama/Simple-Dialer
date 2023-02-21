@@ -7,15 +7,18 @@
     android:layout_height="wrap_content"
     android:layout_alignParentBottom="true"
     android:focusableInTouchMode="true"
+    android:layoutDirection="ltr"
+    android:paddingStart="@dimen/medium_margin"
     android:paddingTop="@dimen/medium_margin"
+    android:paddingEnd="@dimen/medium_margin"
     tools:ignore="HardcodedText">
 
     <RelativeLayout
         android:id="@+id/dialpad_1_holder"
+        style="@style/DialpadButtonStyle"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginStart="@dimen/activity_margin"
-        android:background="?attr/selectableItemBackgroundBorderless"
+        android:contentDescription="@string/one"
         app:layout_constraintBottom_toBottomOf="@+id/dialpad_2_holder"
         app:layout_constraintEnd_toStartOf="@+id/dialpad_2_holder"
         app:layout_constraintStart_toStartOf="parent"
@@ -27,16 +30,17 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
             android:text="1" />
+
     </RelativeLayout>
 
     <RelativeLayout
         android:id="@+id/dialpad_2_holder"
+        style="@style/DialpadButtonStyle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/medium_margin"
-        android:background="?attr/selectableItemBackgroundBorderless"
+        android:contentDescription="@string/two"
         app:layout_constraintBottom_toTopOf="@+id/dialpad_5_holder"
         app:layout_constraintEnd_toStartOf="@+id/dialpad_3_holder"
         app:layout_constraintStart_toEndOf="@+id/dialpad_1_holder">
@@ -46,7 +50,6 @@
             style="@style/DialpadNumberStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
             android:text="2" />
 
         <com.simplemobiletools.commons.views.MyTextView
@@ -55,18 +58,16 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/dialpad_2"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="@dimen/medium_margin"
-            android:gravity="center_horizontal"
+            android:layout_marginBottom="@dimen/small_margin"
             android:text="ABC" />
     </RelativeLayout>
 
     <RelativeLayout
         android:id="@+id/dialpad_3_holder"
+        style="@style/DialpadButtonStyle"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginEnd="@dimen/activity_margin"
-        android:background="?attr/selectableItemBackgroundBorderless"
+        android:contentDescription="@string/three"
         app:layout_constraintBottom_toBottomOf="@+id/dialpad_2_holder"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/dialpad_2_holder"
@@ -77,7 +78,6 @@
             style="@style/DialpadNumberStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
             android:text="3" />
 
         <com.simplemobiletools.commons.views.MyTextView
@@ -86,18 +86,15 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/dialpad_3"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="@dimen/medium_margin"
-            android:gravity="center_horizontal"
             android:text="DEF" />
     </RelativeLayout>
 
     <RelativeLayout
         android:id="@+id/dialpad_4_holder"
+        style="@style/DialpadButtonStyle"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginStart="@dimen/activity_margin"
-        android:background="?attr/selectableItemBackgroundBorderless"
+        android:contentDescription="@string/four"
         app:layout_constraintBottom_toBottomOf="@+id/dialpad_5_holder"
         app:layout_constraintEnd_toStartOf="@+id/dialpad_5_holder"
         app:layout_constraintStart_toStartOf="parent"
@@ -108,7 +105,6 @@
             style="@style/DialpadNumberStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
             android:text="4" />
 
         <com.simplemobiletools.commons.views.MyTextView
@@ -117,18 +113,16 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/dialpad_4"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="@dimen/medium_margin"
-            android:gravity="center_horizontal"
             android:text="GHI" />
     </RelativeLayout>
 
     <RelativeLayout
         android:id="@+id/dialpad_5_holder"
+        style="@style/DialpadButtonStyle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/medium_margin"
-        android:background="?attr/selectableItemBackgroundBorderless"
+        android:contentDescription="@string/five"
         app:layout_constraintBottom_toTopOf="@+id/dialpad_8_holder"
         app:layout_constraintEnd_toStartOf="@+id/dialpad_6_holder"
         app:layout_constraintStart_toEndOf="@+id/dialpad_4_holder">
@@ -138,7 +132,6 @@
             style="@style/DialpadNumberStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
             android:text="5" />
 
         <com.simplemobiletools.commons.views.MyTextView
@@ -147,18 +140,16 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/dialpad_5"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="@dimen/medium_margin"
-            android:gravity="center_horizontal"
+            android:layout_marginBottom="@dimen/small_margin"
             android:text="JKL" />
     </RelativeLayout>
 
     <RelativeLayout
         android:id="@+id/dialpad_6_holder"
+        style="@style/DialpadButtonStyle"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginEnd="@dimen/activity_margin"
-        android:background="?attr/selectableItemBackgroundBorderless"
+        android:contentDescription="@string/six"
         app:layout_constraintBottom_toBottomOf="@+id/dialpad_5_holder"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/dialpad_5_holder"
@@ -169,7 +160,6 @@
             style="@style/DialpadNumberStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
             android:text="6" />
 
         <com.simplemobiletools.commons.views.MyTextView
@@ -178,18 +168,15 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/dialpad_6"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="@dimen/medium_margin"
-            android:gravity="center_horizontal"
             android:text="MNO" />
     </RelativeLayout>
 
     <RelativeLayout
         android:id="@+id/dialpad_7_holder"
+        style="@style/DialpadButtonStyle"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginStart="@dimen/activity_margin"
-        android:background="?attr/selectableItemBackgroundBorderless"
+        android:contentDescription="@string/seven"
         app:layout_constraintBottom_toBottomOf="@+id/dialpad_8_holder"
         app:layout_constraintEnd_toStartOf="@+id/dialpad_8_holder"
         app:layout_constraintStart_toStartOf="parent"
@@ -200,7 +187,6 @@
             style="@style/DialpadNumberStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
             android:text="7" />
 
         <com.simplemobiletools.commons.views.MyTextView
@@ -209,18 +195,16 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/dialpad_7"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="@dimen/medium_margin"
-            android:gravity="center_horizontal"
             android:text="PQRS" />
     </RelativeLayout>
 
     <RelativeLayout
         android:id="@+id/dialpad_8_holder"
+        style="@style/DialpadButtonStyle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/medium_margin"
-        android:background="?attr/selectableItemBackgroundBorderless"
+        android:contentDescription="@string/eight"
         app:layout_constraintBottom_toTopOf="@+id/dialpad_0_holder"
         app:layout_constraintEnd_toStartOf="@+id/dialpad_9_holder"
         app:layout_constraintStart_toEndOf="@+id/dialpad_7_holder">
@@ -230,7 +214,6 @@
             style="@style/DialpadNumberStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
             android:text="8" />
 
         <com.simplemobiletools.commons.views.MyTextView
@@ -239,18 +222,16 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/dialpad_8"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="@dimen/medium_margin"
-            android:gravity="center_horizontal"
+            android:layout_marginBottom="@dimen/small_margin"
             android:text="TUV" />
     </RelativeLayout>
 
     <RelativeLayout
         android:id="@+id/dialpad_9_holder"
+        style="@style/DialpadButtonStyle"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginEnd="@dimen/activity_margin"
-        android:background="?attr/selectableItemBackgroundBorderless"
+        android:contentDescription="@string/nine"
         app:layout_constraintBottom_toBottomOf="@+id/dialpad_8_holder"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/dialpad_8_holder"
@@ -261,7 +242,6 @@
             style="@style/DialpadNumberStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
             android:text="9" />
 
         <com.simplemobiletools.commons.views.MyTextView
@@ -270,18 +250,15 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/dialpad_9"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="@dimen/medium_margin"
-            android:gravity="center_horizontal"
             android:text="WXYZ" />
     </RelativeLayout>
 
     <RelativeLayout
         android:id="@+id/dialpad_asterisk_holder"
+        style="@style/DialpadButtonStyle"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginStart="@dimen/activity_margin"
-        android:background="?attr/selectableItemBackgroundBorderless"
+        android:contentDescription="@string/asterisk"
         app:layout_constraintBottom_toBottomOf="@+id/dialpad_0_holder"
         app:layout_constraintEnd_toStartOf="@+id/dialpad_0_holder"
         app:layout_constraintStart_toStartOf="parent"
@@ -292,17 +269,17 @@
             style="@style/DialpadNumberStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
+            android:layout_centerInParent="true"
             android:text="*" />
     </RelativeLayout>
 
     <RelativeLayout
         android:id="@+id/dialpad_0_holder"
+        style="@style/DialpadButtonStyle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/activity_margin"
-        android:background="?attr/selectableItemBackgroundBorderless"
+        android:layout_marginBottom="@dimen/medium_margin"
+        android:contentDescription="@string/zero"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/dialpad_hashtag_holder"
         app:layout_constraintStart_toEndOf="@+id/dialpad_asterisk_holder">
@@ -312,31 +289,47 @@
             style="@style/DialpadNumberStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
             android:text="0" />
 
         <com.simplemobiletools.commons.views.MyTextView
-            android:id="@+id/dialpad_plus"
+            android:id="@+id/dialpad_plus_letters"
+            style="@style/DialpadLetterStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignTop="@+id/dialpad_0"
-            android:layout_alignBottom="@+id/dialpad_0"
-            android:layout_centerHorizontal="true"
-            android:layout_toEndOf="@+id/dialpad_0"
-            android:gravity="center"
-            android:paddingStart="@dimen/small_margin"
-            android:paddingTop="@dimen/small_margin"
-            android:text="+"
-            android:textSize="@dimen/actionbar_text_size" />
+            android:layout_below="@+id/dialpad_0"
+            android:layout_marginBottom="@dimen/small_margin"
+            android:text="+" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/dialpad_plus_holder"
+        style="@style/DialpadButtonStyle"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:contentDescription="@string/zero"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/dialpad_0_holder"
+        app:layout_constraintEnd_toStartOf="@+id/dialpad_hashtag_holder"
+        app:layout_constraintStart_toEndOf="@+id/dialpad_asterisk_holder"
+        app:layout_constraintTop_toTopOf="@+id/dialpad_0_holder">
+
+        <com.simplemobiletools.commons.views.MyTextView
+            android:id="@+id/dialpad_plus_alt"
+            style="@style/DialpadNumberStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="+" />
 
     </RelativeLayout>
 
     <RelativeLayout
         android:id="@+id/dialpad_hashtag_holder"
+        style="@style/DialpadButtonStyle"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginEnd="@dimen/activity_margin"
-        android:background="?attr/selectableItemBackgroundBorderless"
+        android:contentDescription="@string/hashtag"
         app:layout_constraintBottom_toBottomOf="@+id/dialpad_0_holder"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/dialpad_0_holder"
@@ -347,8 +340,8 @@
             style="@style/DialpadNumberStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_marginEnd="@dimen/activity_margin"
+            android:layout_centerInParent="true"
             android:text="#" />
+
     </RelativeLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

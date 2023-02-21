@@ -1,32 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Simple Dialer</string>
-    <string name="app_launcher_name">Puhelin</string>
+    <string name="app_name">Yksinkertainen Numerovalitsin</string>
+    <string name="app_launcher_name">Numerovalitsin</string>
     <string name="default_phone_app_prompt">Aseta tämä sovellus oletukseksi puheluille</string>
-
+    <string name="allow_displaying_over_other_apps">Hyväksy näkyminen muiden sovellusten päällä, jotta sovellus toimii luotettavasti</string>
     <!-- Contacts -->
     <string name="could_not_access_contacts">Ei käyttöoikeutta yhteystietoihin</string>
-
     <!-- Recents -->
     <string name="no_previous_calls">Ei puheluita</string>
     <string name="could_not_access_the_call_history">Ei käyttöoikeutta puheluhistoriaan</string>
     <string name="request_access">Pyydä käyttöoikeutta</string>
-    <string name="remove_confirmation">Haluatko varmasti poistaa valitut kohteet puheluhistoriasta?</string>
-    <string name="clear_history_confirmation">Haluatko varmasti tyhjentää koko puheluhistorian?</string>
-    <string name="send_sms">Lähetä tekstiviesti</string>
+    <string name="remove_confirmation">Haluatko varmasti poistaa valitut kohteet puheluhistoriasta\?</string>
+    <string name="clear_history_confirmation">Haluatko varmasti tyhjentää koko puheluhistorian\?</string>
     <string name="show_grouped_calls">Näytä ryhmitetyt puhelut</string>
     <string name="clear_call_history">Tyhjennä puheluhistoria</string>
-
+    <string name="show_call_details">Näytä puhelun tiedot</string>
     <!-- Dialpad -->
-    <string name="dialpad">Numerovalitsin</string>
-
+    <string name="dialpad">Valintanäppäimistö</string>
     <!-- TrueCaller auth Token -->
     <string name="truecaller_auth_token">Truecaller Auth Token</string>
     <string name="token">Token</string>
 
+    <string name="asterisk">Asteriski</string>
+    <string name="hashtag">Risuaita</string>
+    <string name="call_number">Soita numeroon</string>
+    <string name="dialpad_beeps">Äänimerkkien ottaminen käyttöön valintanäppäimen napsautuksen yhteydessä</string>
+    <string name="dialpad_vibrations">Ota värinät käyttöön valintanäppäimen napsautuksista</string>
     <!-- Dialer -->
-    <string name="dialer">Puhelin</string>
+    <string name="dialer">Numerovalitsin</string>
     <string name="accept">Hyväksy</string>
+    <string name="accept_call">Vastaa puheluun</string>
     <string name="decline">Hylkää</string>
+    <string name="decline_call">Hylkää puhelu</string>
     <string name="unknown_caller">Tuntematon soittaja</string>
     <string name="is_calling">Soittaa…</string>
     <string name="dialing">Soitetaan…</string>
@@ -36,49 +41,45 @@
     <string name="select_sim">Valitse SIM-kortti puhelulle</string>
     <string name="always_use_this_sim">Käytä tälle numerolle aina tätä SIM-korttia</string>
     <string name="unset_default_sim">Poista oletus-SIM</string>
-
+    <string name="calls">Puhelut</string>
+    <string name="turn_microphone_on">Laita mikrofoni päälle</string>
+    <string name="turn_microphone_off">Laita mikrofoni pois päältä</string>
+    <string name="turn_speaker_on">Laita kaiutin päälle</string>
+    <string name="turn_speaker_off">Laita kaiutin pois päältä</string>
+    <string name="show_dialpad">Näytä valintanäppäimistö</string>
+    <string name="hide_dialpad">Piilota valintanäppäimistö</string>
+    <string name="end_call">Lopeta puhelu</string>
+    <string name="hold_call">Puhelu pitoon</string>
+    <string name="resume_call">Palaa puheluun</string>
+    <string name="call_on_hold">Pidossa</string>
+    <string name="call_swap">Vaihda puheluita</string>
+    <string name="call_merge">Yhdistä puhelut</string>
+    <string name="call_split">Jaa puhelu</string>
+    <string name="call_add">Lisää puhelu</string>
+    <string name="conference_manage">Hallinnoi puhelinneuvottelua</string>
+    <string name="conference">Neuvottelu</string>
+    <string name="audio_route_speaker">Speaker</string>
+    <string name="audio_route_earpiece">Earpiece</string>
+    <string name="audio_route_bluetooth">Bluetooth</string>
+    <string name="audio_route_wired_headset">Wired Headset</string>
+    <string name="audio_route_wired_or_earpiece">Wired or Earpiece</string>
+    <string name="choose_audio_route">Choose audio route</string>
+    <string name="calling_blocked_number">The number you are calling is blocked</string>
     <!-- Speed dial -->
     <string name="speed_dial">Pikavalinta</string>
     <string name="manage_speed_dial">Pikavalinnan asetukset</string>
     <string name="speed_dial_label">Paina numeroa asettaaksesi sille yhteystiedon. Yhteystiedolle soitetaan, kun painat numeroa pitkään numerovalitsimessa.</string>
-
     <!-- Settings -->
     <string name="group_subsequent_calls">Ryhmitä saman numeron peräkkäiset puhelut puheluhistoriassa</string>
     <string name="open_dialpad_by_default">Avaa numeronäppäimistö, kun sovellus avataan</string>
-    <string name="disable_proximity_sensor">Disable proximity sensor during calls</string>
+    <string name="disable_proximity_sensor">Poista läheisyysanturi käytöstä puheluiden aikana</string>
+    <string name="disable_swipe_to_answer">Vastaa puheluihin painalluksella pyyhkäisyn sijaan</string>
+    <string name="show_incoming_calls_full_screen">Näytä saapuvat puhelut aina koko näytöllä</string>
+    <string name="hide_dialpad_numbers">Hide dialpad numbers</string>
 
-    <!-- Strings displayed only on Google Playstore. Optional, but good to have -->
-    <!-- App title has to have less than 50 characters. If you cannot squeeze it, just remove a part of it -->
-    <string name="app_title">Simple Dialer - Hallitse puheluitasi helposti</string>
-    <!-- Short description has to have less than 80 chars -->
-    <string name="app_short_description">Näppärä puhelinsovellus osoitteistolla, numeroestolla ja usean SIM-kortin tuella</string>
-    <string name="app_long_description">
-        Kevyt sovellus puheluiden hallintaan, missä tahansa oletkin. Sovelluksessa on myös puheluhistoria, josta teet puheluita helposti.
-
-        Sinua varten sovelluksessa on myös pikatoiminen numeronäppäimistö älykkäällä yhteystietojen ehdotuksella. Se tukee myös kirjaimia.
-
-        Voit helposti estää numeroita välttääksesi saapuvia puheluita valitsemistasi numeroista.
-
-        Puheluiden hallintaa helpottaa mahdollisuus valita suosikkiyhteystietoja, joille voit luoda myös pikakuvakkeita puhelimen aloitusnäytölle
-
-        Pikavalintatuki tekee suosikkiyhteystiedoille soittamisesta salamannopeaa.
-        
-        Sovelluksen ulkoasu noudattelee material designia, tumma teema on oletuksena käytettävissä. Ulkoasu tarjoaa loistavan ja mutkattoman käyttökokemuksen. Voit mukauttaa sovelluksen värejä.
-
-        Internet-yhteyttä ei käytetä, joten puhelimesi turvallisuus ja yksityisyytesi ja ovat turvattu.
-
-        Ei sisällä mainoksia eikä vaadi tarpeettomia käyttöoikeuksia. Sovellus on täysin avointa lähädekoodia.
-
-        <b>Katso koko Simple Tools-sovellusvalikoima täältä:</b>
-        https://www.simplemobiletools.com
-
-        <b>Facebook:</b>
-        https://www.facebook.com/simplemobiletools
-
-        <b>Reddit:</b>
-        https://www.reddit.com/r/SimpleMobileTools
-    </string>
-
+    <!-- FAQ -->
+    <string name="faq_1_title">Kuulen saapuvat puhelut, mutta näyttö ei käynnisty. Mitä voin tehdä\?</string>
+    <string name="faq_1_text">Tällaisiin ongelmiin voi olla monia laite- ja järjestelmäkohtaisia syitä, joita on vaikea sanoa yleisesti. Kannattaa tutkia laitteen asetuksia ja varmistaa, että sovelluksen on sallittu ponnahtaa esiin, kun se on taustalla, ja sallia sen näyttäminen muiden sovellusten yläpuolella.</string>
     <!--
         Haven't found some strings? There's more at
         https://github.com/SimpleMobileTools/Simple-Commons/tree/master/commons/src/main/res

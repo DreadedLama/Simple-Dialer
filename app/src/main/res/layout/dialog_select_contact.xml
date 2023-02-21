@@ -28,6 +28,6 @@
         android:layout_alignTop="@+id/letter_fastscroller"
         android:layout_alignBottom="@+id/letter_fastscroller"
         android:layout_marginEnd="@dimen/activity_margin"
-        android:layout_toStartOf="@+id/letter_fastscroller" />
+        android:layout_toStartOf="@+id/letter_fastscroller"/>
 
 </RelativeLayout>

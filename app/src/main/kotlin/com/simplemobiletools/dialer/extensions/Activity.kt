@@ -25,10 +25,18 @@ fun SimpleActivity.startCallIntent(recipient: String) {
     }
 }
 
-fun BaseSimpleActivity.callContactWithSim(recipient: String, useSimOne: Boolean) {
+fun SimpleActivity.launchCreateNewContactIntent() {
+    Intent().apply {
+        action = Intent.ACTION_INSERT
+        data = ContactsContract.Contacts.CONTENT_URI
+        launchActivityIntent(this)
+    }
+}
+
+fun BaseSimpleActivity.callContactWithSim(recipient: String, useMainSIM: Boolean) {
     handlePermission(PERMISSION_READ_PHONE_STATE) {
-        val wantedSimIndex = if (useSimOne) 0 else 1
-        val handle = getAvailableSIMCardLabels().sortedBy { it.id }[wantedSimIndex].handle
+        val wantedSimIndex = if (useMainSIM) 0 else 1
+        val handle = getAvailableSIMCardLabels().sortedBy { it.id }.getOrNull(wantedSimIndex)?.handle
         launchCallIntent(recipient, handle)
     }
 }

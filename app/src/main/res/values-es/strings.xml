@@ -1,32 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Marcador Simple</string>
     <string name="app_launcher_name">Marcador</string>
-    <string name="default_phone_app_prompt">Please make this app the default Phone app</string>
-
+    <string name="default_phone_app_prompt">Por favor, haz que esta aplicación sea la aplicación de teléfono por defecto</string>
+    <string name="allow_displaying_over_other_apps">Por favor, permita la visualización sobre otras aplicaciones para un comportamiento fiable</string>
     <!-- Contacts -->
-    <string name="could_not_access_contacts">No se pudo acceder a tus contactos</string>
-
+    <string name="could_not_access_contacts">No se ha podido acceder a tus contactos</string>
     <!-- Recents -->
-    <string name="no_previous_calls">No se han encontrado llamadas previas</string>
+    <string name="no_previous_calls">No se han encontrado llamadas anteriores</string>
     <string name="could_not_access_the_call_history">No se pudo acceder al historial de llamadas</string>
     <string name="request_access">Solicitar acceso</string>
-    <string name="remove_confirmation">¿Estás seguro que quieres eliminar los elementos seleccionados del historial de llamadas?</string>
-    <string name="clear_history_confirmation">¿Está seguro de que desea eliminar todo del historial de llamadas?</string>
-    <string name="send_sms">Enviar SMS</string>
+    <string name="remove_confirmation">¿Estás seguro que quieres eliminar los elementos seleccionados del historial de llamadas\?</string>
+    <string name="clear_history_confirmation">¿Está seguro de que desea eliminar todo del historial de llamadas\?</string>
     <string name="show_grouped_calls">Mostrar llamadas agrupadas</string>
     <string name="clear_call_history">Borrar historial de llamadas</string>
-
+    <string name="show_call_details">Mostrar los detalles de la llamada</string>
     <!-- Dialpad -->
     <string name="dialpad">Teclado de marcado</string>
-
     <!-- TrueCaller auth Token -->
     <string name="truecaller_auth_token">Truecaller Auth Token</string>
     <string name="token">Token</string>
 
+    <string name="asterisk">Asterisco</string>
+    <string name="hashtag">Almohadilla</string>
+    <string name="call_number">Número de llamada</string>
+    <string name="dialpad_beeps">Activar los pitidos al pulsar los botones del teclado telefónico</string>
+    <string name="dialpad_vibrations">Activar las vibraciones al pulsar los botones del teclado</string>
+>>>>>>> upstream/master
     <!-- Dialer -->
     <string name="dialer">Marcador</string>
     <string name="accept">Aceptar</string>
+    <string name="accept_call">Aceptar llamada</string>
     <string name="decline">Rechazar</string>
+    <string name="decline_call">Rechazar llamada</string>
     <string name="unknown_caller">Número desconocido</string>
     <string name="is_calling">Está llamando…</string>
     <string name="dialing">Llamando…</string>
@@ -36,47 +42,44 @@
     <string name="select_sim">Selecciona una tarjeta SIM para esta llamada</string>
     <string name="always_use_this_sim">Siempre usar esta tarjeta SIM para este número</string>
     <string name="unset_default_sim">Desarmado predeterminado SIM</string>
-
+    <string name="calls">Llamadas</string>
+    <string name="turn_microphone_on">Encender el micrófono</string>
+    <string name="turn_microphone_off">Apagar el micrófono</string>
+    <string name="turn_speaker_on">Encender el altavoz</string>
+    <string name="turn_speaker_off">Apagar el altavoz</string>
+    <string name="show_dialpad">Mostrar el dial</string>
+    <string name="hide_dialpad">Esconder el dial</string>
+    <string name="end_call">Terminar llamada</string>
+    <string name="hold_call">Poner la llamada en espera</string>
+    <string name="resume_call">Continuar llamada</string>
+    <string name="call_on_hold">En espera</string>
+    <string name="call_swap">Intercambiar llamadas</string>
+    <string name="call_merge">Combinar llamadas</string>
+    <string name="call_split">Dividir llamadas</string>
+    <string name="call_add">Añadir llamada</string>
+    <string name="conference_manage">Administrar conferencia</string>
+    <string name="conference">Conferencia</string>
+    <string name="audio_route_speaker">Altavoz</string>
+    <string name="audio_route_earpiece">Auricular</string>
+    <string name="audio_route_bluetooth">Bluetooth</string>
+    <string name="audio_route_wired_headset">Auricular con cable</string>
+    <string name="audio_route_wired_or_earpiece">Auricular inalámbrico</string>
+    <string name="choose_audio_route">Elija la salida del audio</string>
+    <string name="calling_blocked_number">El número al que llamas está bloqueado</string>
     <!-- Speed dial -->
     <string name="speed_dial">Marcado rápido</string>
     <string name="manage_speed_dial">Administrar marcado rápido</string>
     <string name="speed_dial_label">Toca un número para asignarle un contacto. Entonces podrás llamarlo rápidamente manteniendo presionado el número asignado en el teclado de marcado.</string>
-
     <!-- Settings -->
     <string name="group_subsequent_calls">Agrupar llamadas subsecuentes con el mísmo número en el registro de llamadas</string>
-    <string name="open_dialpad_by_default">Open the dialpad by default when the app opens</string>
-    <string name="disable_proximity_sensor">Disable proximity sensor during calls</string>
-
-    <!-- Strings displayed only on Google Playstore. Optional, but good to have -->
-    <!-- App title has to have less than 50 characters. If you cannot squeeze it, just remove a part of it -->
-    <string name="app_title">Marcador Simple - Administra tus llamadas fácil</string>
-    <!-- Short description has to have less than 80 chars -->
-    <string name="app_short_description">Un útil gestor de llamadas, contactos, bloqueo de números y soporte multi-SIM</string>
-    <string name="app_long_description">
-        Una ligera aplicación para manejar tus llamadas, no importa dónde estés. Incluye un práctico registro de llamadas para iiniciar una llamada fácilmente.
-
-        También tiene un teclado de marcado rápido a tu servicio, con sugerencias inteligentes de contactos. También soporta letras.
-
-        Fácilmente puedes bloquear números para evitar llamadas indeseadas.
-
-        El marcado rápido hace que llamar a tus contactos favoritos sea muy fácil.
-
-        Para ayudarte a administrar tus llamadas rápidamente, la aplicación también soporta contactos favoritos y crear atajos de cualqueir contacto en la pantalla principal.
-
-        Incluye diseño material y tema obscuro por defecto, provee una gran experiencia de usuario para uso sencillo. La falta del acceso a internet te da más privacidad, seguridad y estabilidad que otras aplicaciones.
-
-        No contiene anuncios o permisos innecesarios. Es completamente de código abierto, provee colores personalizables.
-
-        <b>Mira la suite completa de herramientas Simples aquí:</b>
-        https://www.simplemobiletools.com
-
-        <b>Facebook:</b>
-        https://www.facebook.com/simplemobiletools
-
-        <b>Reddit:</b>
-        https://www.reddit.com/r/SimpleMobileTools
-    </string>
-
+    <string name="open_dialpad_by_default">Abrir el teclado de marcado de forma predeterminada al abrir la aplicación</string>
+    <string name="disable_proximity_sensor">Deshabilitar el sensor de proximidad durante las llamadas</string>
+    <string name="disable_swipe_to_answer">Reemplazar deslizar para responder llamadas entrantes a pulsar</string>
+    <string name="show_incoming_calls_full_screen">Siempre mostrar llamadas entrantes en pantalla completa</string>
+    <string name="hide_dialpad_numbers">Ocultar los números del teclado</string>
+    <!-- FAQ -->
+    <string name="faq_1_title">Escucho las llamadas entrantes, pero la pantalla no se enciende. ¿Qué puedo hacer\?</string>
+    <string name="faq_1_text">Estos problemas pueden deberse a muchas razones específicas del dispositivo y del sistema, es difícil decirlo en general. Deberías mirar en la configuración de tu dispositivo y asegurarte de que la aplicación tiene permiso para aparecer cuando está en segundo plano y permitir la aplicación se muestre sobre otras aplicaciones.</string>
     <!--
         Haven't found some strings? There's more at
         https://github.com/SimpleMobileTools/Simple-Commons/tree/master/commons/src/main/res

@@ -1,32 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Simple Dialer</string>
+    <string name="app_name">Telefono Semplice</string>
     <string name="app_launcher_name">Telefono</string>
     <string name="default_phone_app_prompt">Per favore, rendi l\'app la predefinita per le chiamate</string>
-
+    <string name="allow_displaying_over_other_apps">Si prega di consentire la visualizzazione su altre app per un comportamento affidabile</string>
     <!-- Contacts -->
     <string name="could_not_access_contacts">Impossibile accedere ai contatti</string>
-
     <!-- Recents -->
     <string name="no_previous_calls">Non sono state trovate chiamate precedenti</string>
     <string name="could_not_access_the_call_history">Impossibile accedere alla cronologia delle chiamate</string>
     <string name="request_access">Richiedo accesso</string>
-    <string name="remove_confirmation">Rimuovere davvero l\'elemento selezionato dalla cronologia delle chiamate?</string>
-    <string name="clear_history_confirmation">Sicuro di voler svuotare la cronologia delle chiamate?</string>
-    <string name="send_sms">Invia SMS</string>
+    <string name="remove_confirmation">Rimuovere davvero l\'elemento selezionato dalla cronologia delle chiamate\?</string>
+    <string name="clear_history_confirmation">Sicuro/a di voler svuotare la cronologia delle chiamate\?</string>
     <string name="show_grouped_calls">Mostra chiamate raggruppate</string>
     <string name="clear_call_history">Svuota la cronologia delle chiamate</string>
-
+    <string name="show_call_details">Mostra i dettagli della chiamata</string>
     <!-- Dialpad -->
     <string name="dialpad">Tastierino numerico</string>
-
     <!-- TrueCaller auth Token -->
     <string name="truecaller_auth_token">Truecaller Auth Token</string>
     <string name="token">Token</string>
 
+    <string name="asterisk">Asterisco</string>
+    <string name="hashtag">Cancelletto</string>
+    <string name="call_number">Numero di chiamata</string>
+    <string name="dialpad_beeps">Abilita i segnali acustici ai clic dei pulsanti della tastiera</string>
+    <string name="dialpad_vibrations">Abilita le vibrazioni sui clic dei pulsanti della tastiera</string>
+>>>>>>> upstream/master
     <!-- Dialer -->
     <string name="dialer">Compositore</string>
     <string name="accept">Accetta</string>
+    <string name="accept_call">Accetta la chiamata</string>
     <string name="decline">Rifiuta</string>
+    <string name="decline_call">Rifiuta la chiamata</string>
     <string name="unknown_caller">Sconosciuto</string>
     <string name="is_calling">Chiamata in corso…</string>
     <string name="dialing">Composizione…</string>
@@ -36,47 +42,44 @@
     <string name="select_sim">Seleziona una SIM per questa chiamata</string>
     <string name="always_use_this_sim">Usa sempre questa SIM per questo numero</string>
     <string name="unset_default_sim">Non utilizzare più questa SIM come predefinita</string>
-
+    <string name="calls">Chiamate</string>
+    <string name="turn_microphone_on">Attiva il microfono</string>
+    <string name="turn_microphone_off">Spegni il microfono</string>
+    <string name="turn_speaker_on">Attiva l\'altoparlante</string>
+    <string name="turn_speaker_off">Spegni l\'altoparlante</string>
+    <string name="show_dialpad">Mostra il tastierino</string>
+    <string name="hide_dialpad">Nascondi il tastierino</string>
+    <string name="end_call">Termina la chiamata</string>
+    <string name="hold_call">Metti in attesa la chiamata</string>
+    <string name="resume_call">Riprendi la chiamata</string>
+    <string name="call_on_hold">In attesa</string>
+    <string name="call_swap">Scambia chiamate</string>
+    <string name="call_merge">Unisci le chiamate</string>
+    <string name="call_split">Dividi la chiamata</string>
+    <string name="call_add">Aggiungi una chiamata</string>
+    <string name="conference_manage">Gestisci la teleconferenza</string>
+    <string name="conference">Conferenza</string>
+    <string name="audio_route_speaker">Altoparlante</string>
+    <string name="audio_route_earpiece">Auricolare</string>
+    <string name="audio_route_bluetooth">Bluetooth</string>
+    <string name="audio_route_wired_headset">Cuffia cablata</string>
+    <string name="audio_route_wired_or_earpiece">Cablato o auricolare</string>
+    <string name="choose_audio_route">Scegli l\'uscita audio</string>
+    <string name="calling_blocked_number">Il numero che stai chiamando è bloccato</string>
     <!-- Speed dial -->
     <string name="speed_dial">Contatti veloci</string>
     <string name="manage_speed_dial">Gestisci i contatti veloci</string>
     <string name="speed_dial_label">Seleziona un numero per assegnargli un contatto. In questo modo puoi chiamarlo rapidamente tenendo premuto sul numero scelto nel tastierino.</string>
-
     <!-- Settings -->
     <string name="group_subsequent_calls">Raggruppa chiamate successive con lo stesso numero nel registro delle chiamate</string>
-    <string name="open_dialpad_by_default">Open the dialpad by default when the app opens</string>
-    <string name="disable_proximity_sensor">Disable proximity sensor during calls</string>
-
-    <!-- Strings displayed only on Google Playstore. Optional, but good to have -->
-    <!-- App title has to have less than 50 characters. If you cannot squeeze it, just remove a part of it -->
-    <string name="app_title">Simple Dialer - Gestisci le chiamate</string>
-    <!-- Short description has to have less than 80 chars -->
-    <string name="app_short_description">Un gestore di chiamate con rubrica, blocco dei numeri e supporto per più SIM</string>
-    <string name="app_long_description">
-        Un\'app leggera per gestire le proprie chiamate, non importa dove ti trovi. È dotata di un comodo registro delle chiamate.
-
-        Ha un rapido compositore al tuo servizio, con il suggerimento intelligente dei contatti. Supporta anche le lettere.
-
-        Puoi facilmente bloccare un numero per evitare chiamate indesiderate.
-
-        Supporta la composizione rapida dei tuoi contatti preferiti.
-
-        Per aiutarti nella gestione rapida delle chiamate, l\'app supporta la selezione di contatti preferiti e la creazione di scorciatoie nella schermata principale.
-
-        È dotata di un\'interfaccia in material design con il tema scuro predefinito e colori personalizzabili. La mancanza di accesso internet è garanzia di maggiore privacy, sicurezza e stabilità rispetto ad altre applicazioni.
-
-        Non contiene publicità o permessi non necessari, ed è completamente open source.
-
-        <b>Dai un\'occhiata alle altre applicazioni Simple Tools:</b>
-        https://www.simplemobiletools.com
-
-        <b>Facebook:</b>
-        https://www.facebook.com/simplemobiletools
-
-        <b>Reddit:</b>
-        https://www.reddit.com/r/SimpleMobileTools
-    </string>
-
+    <string name="open_dialpad_by_default">Apri il tastierino per impostazione predefinita quando l\'app si apre</string>
+    <string name="disable_proximity_sensor">Disattiva il sensore di prossimità durante le chiamate</string>
+    <string name="disable_swipe_to_answer">Sostituisci lo scorrimento nel rispondere alle chiamate in arrivo con un clic</string>
+    <string name="show_incoming_calls_full_screen">Visualizza sempre le chiamate in arrivo a schermo intero</string>
+    <string name="hide_dialpad_numbers">Nascondi i numeri del tastierino</string>
+    <!-- FAQ -->
+    <string name="faq_1_title">Sento le chiamate in arrivo, ma lo schermo non si accende. Cosa posso fare\?</string>
+    <string name="faq_1_text">Tali problemi possono avere molte ragioni specifiche per il dispositivo e il sistema, è difficile identificarle in generale. Dovresti dare un\'occhiata alle impostazioni del dispositivo e assicurarti che l\'app sia autorizzata a comparire quando è in background e che permetta la visualizzazione sopra le altre app.</string>
     <!--
         Haven't found some strings? There's more at
         https://github.com/SimpleMobileTools/Simple-Commons/tree/master/commons/src/main/res

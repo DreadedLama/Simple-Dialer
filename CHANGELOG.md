@@ -1,6 +1,159 @@
 Changelog
 ==========
 
+Version 5.17.3 *(2023-01-12)*
+----------------------------
+
+ * Fixed a search glitch on some devices
+
+Version 5.17.2 *(2023-01-10)*
+----------------------------
+
+ * Fixed a glitch with dialpad button not being visible on some devices
+
+Version 5.17.1 *(2023-01-04)*
+----------------------------
+
+ * Added the new search bar at the top menu
+
+Version 5.17.0 *(2022-12-30)*
+----------------------------
+
+ * Do not allow calling blocked numbers
+ * Allow hiding numbers on the dialpad
+ * Use Material You theme by default on Android 12+
+ * Added some UI, translation and stability improvements
+
+Version 5.16.0 *(2022-11-12)*
+----------------------------
+
+ * Allow changing the audio route during calls
+ * Require Simple Thank You for some features
+ * Added some stability, translation and UX improvements
+
+Version 5.15.5 *(2022-10-25)*
+----------------------------
+
+ * Fixed a glitch with call notification getting stuck
+ * Added some translation and UX improvements
+
+Version 5.15.4 *(2022-10-06)*
+----------------------------
+
+ * Adding a Get Simple Phone button into the About section
+ * Added some translation and UX improvements
+
+Version 5.15.1 *(2022-09-14)*
+----------------------------
+
+ * Allow blocking numbers by patterns
+ * Properly clear missed calls count
+ * Added some stability and translation improvements
+
+Version 5.15.0 *(2022-09-02)*
+----------------------------
+
+ * Allow toggling beeps and vibrations at the dial pad
+ * Allow pasting numbers at the dialpad
+ * Allow always displaying incoming calls on fullscreen
+ * Added Monochrome icon and Language picker support on Android 13+
+ * Added some translation, stability and UX improvements
+
+Version 5.14.1 *(2022-08-11)*
+----------------------------
+
+ * Fixed some glitches with incoming call screen and notification disappearing
+ * Added some stability, translation and UX improvements
+
+Version 5.14.0 *(2022-07-31)*
+----------------------------
+
+ * Adding some materialish elements, especially in System default theme
+ * Added some stability, translation and UX improvements
+
+Version 5.13.3 *(2022-06-26)*
+----------------------------
+
+ * Moved tabs at the bottom
+ * Properly handle default contact numbers
+ * Added some translation, stability and UX improvements
+
+Version 5.13.2 *(2022-06-24)*
+----------------------------
+
+ * Moved tabs at the bottom
+ * Limit fetched item count at the Recents tab
+ * Added many translation, stability and UI improvements
+
+Version 5.13.1 *(2022-06-08)*
+----------------------------
+
+ * Added some stability improvements
+
+Version 5.13.0 *(2022-06-08)*
+----------------------------
+
+ * Added conference call support
+ * Allow blocking incoming calls from not stored contacts
+ * Show incoming call as a top notification in some cases
+ * Made incoming call screen more reliable
+ * Add more options at call history items
+ * Allow custom ordering of Favorite items
+ * Fixed the Indonesian translation
+ * Added many stability, translation and UX improvements
+
+Version 5.12.0 *(2022-04-13)*
+----------------------------
+
+ * Added Material You theme support on Android 12+
+ * Added some translation and UX improvements
+
+Version 5.11.5 *(2022-03-07)*
+----------------------------
+
+ * Added a Privacy policy
+ * Added some stability and translation improvements
+
+Version 5.11.4 *(2022-02-08)*
+----------------------------
+
+ * Added many improvements related to having multiple SIM cards or contacts having multiple numbers
+ * Fixed a glitch with wrong SIM being shown at the call history
+ * Show a message if the app is the default Phone app but it has no permission to be shown over other apps
+ * Added other UX, stability and translation improvements
+
+Version 5.11.3 *(2021-12-24)*
+----------------------------
+
+ * Added a setting for toggling handling incoming calls between clicks and swipes
+ * Added some stability and translation improvements
+
+Version 5.11.2 *(2021-12-16)*
+----------------------------
+
+ * Changed the accept and decline actions from click to swipe
+ * Added some stability, translation and UX improvements
+
+Version 5.11.1 *(2021-11-29)*
+----------------------------
+
+ * Allow customizing visible tabs
+ * Added multiple content descriptions for improving Talkback usage
+ * Fixed some in-call proximity sensor related glitches
+ * Allow checking the call details of every call, to see its date and time
+ * Added some other translation, stability and UX improvements
+
+Version 5.11.0 *(2021-11-21)*
+----------------------------
+
+ * Redesigned some screens, added an Auto theme
+ * Some translation, stability and UX improvements
+
+Version 5.10.1 *(2021-10-04)*
+----------------------------
+
+ * Added some stability and translation improvements
+
 Version 5.10.0 *(2021-09-25)*
 ----------------------------
 

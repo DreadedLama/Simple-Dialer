@@ -59,4 +59,39 @@ class Config(context: Context) : BaseConfig(context) {
     fun getTrueCallerToken(): String? {
         return prefs.getString(TRUECALLER_TOKEN, "")
     }
+    var disableSwipeToAnswer: Boolean
+        get() = prefs.getBoolean(DISABLE_SWIPE_TO_ANSWER, false)
+        set(disableSwipeToAnswer) = prefs.edit().putBoolean(DISABLE_SWIPE_TO_ANSWER, disableSwipeToAnswer).apply()
+
+    var showTabs: Int
+        get() = prefs.getInt(SHOW_TABS, ALL_TABS_MASK)
+        set(showTabs) = prefs.edit().putInt(SHOW_TABS, showTabs).apply()
+
+    var favoritesContactsOrder: String
+        get() = prefs.getString(FAVORITES_CONTACTS_ORDER, "")!!
+        set(order) = prefs.edit().putString(FAVORITES_CONTACTS_ORDER, order).apply()
+
+    var isCustomOrderSelected: Boolean
+        get() = prefs.getBoolean(FAVORITES_CUSTOM_ORDER_SELECTED, false)
+        set(selected) = prefs.edit().putBoolean(FAVORITES_CUSTOM_ORDER_SELECTED, selected).apply()
+
+    var wasOverlaySnackbarConfirmed: Boolean
+        get() = prefs.getBoolean(WAS_OVERLAY_SNACKBAR_CONFIRMED, false)
+        set(wasOverlaySnackbarConfirmed) = prefs.edit().putBoolean(WAS_OVERLAY_SNACKBAR_CONFIRMED, wasOverlaySnackbarConfirmed).apply()
+
+    var dialpadVibration: Boolean
+        get() = prefs.getBoolean(DIALPAD_VIBRATION, true)
+        set(dialpadVibration) = prefs.edit().putBoolean(DIALPAD_VIBRATION, dialpadVibration).apply()
+
+    var hideDialpadNumbers: Boolean
+        get() = prefs.getBoolean(HIDE_DIALPAD_NUMBERS, false)
+        set(hideDialpadNumbers) = prefs.edit().putBoolean(HIDE_DIALPAD_NUMBERS, hideDialpadNumbers).apply()
+
+    var dialpadBeeps: Boolean
+        get() = prefs.getBoolean(DIALPAD_BEEPS, true)
+        set(dialpadBeeps) = prefs.edit().putBoolean(DIALPAD_BEEPS, dialpadBeeps).apply()
+
+    var alwaysShowFullscreen: Boolean
+        get() = prefs.getBoolean(ALWAYS_SHOW_FULLSCREEN, false)
+        set(alwaysShowFullscreen) = prefs.edit().putBoolean(ALWAYS_SHOW_FULLSCREEN, alwaysShowFullscreen).apply()
 }

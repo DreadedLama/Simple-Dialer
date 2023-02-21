@@ -3,9 +3,7 @@ package com.simplemobiletools.dialer.activities
 import android.annotation.SuppressLint
 import android.app.Activity
 import androidx.appcompat.app.AlertDialog
-import com.simplemobiletools.commons.extensions.setupDialogStuff
-import com.simplemobiletools.commons.extensions.showKeyboard
-import com.simplemobiletools.commons.extensions.value
+import com.simplemobiletools.commons.extensions.*
 import com.simplemobiletools.dialer.R
 import com.simplemobiletools.dialer.extensions.config
 import kotlinx.android.synthetic.main.dialog_add_truecaller_token.view.*
@@ -22,17 +20,17 @@ class SaveTrueCallerTokenActivity(val activity: Activity, val callback: () -> Un
             }
         }
 
-        AlertDialog.Builder(activity)
+        activity.getAlertDialogBuilder()
             .setPositiveButton(com.simplemobiletools.commons.R.string.ok, null)
             .setNegativeButton(com.simplemobiletools.commons.R.string.cancel, null)
-            .create().apply {
-                activity.setupDialogStuff(view, this) {
-                    showKeyboard(view.add_truecaller_token_edittext)
-                    getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
+            .apply {
+                activity.setupDialogStuff(view, this) { alertDialog ->
+                    alertDialog.showKeyboard(view.add_truecaller_token_edittext)
+                    alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
                         val newTrueCallerToken = view.add_truecaller_token_edittext.value
                         activity.config.saveTrueCallerToken(newTrueCallerToken)
                         callback()
-                        dismiss()
+                        alertDialog.dismiss()
                     }
                 }
             }

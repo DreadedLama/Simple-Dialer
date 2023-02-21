@@ -1,9 +1,7 @@
 package com.simplemobiletools.dialer.helpers
 
 import android.annotation.SuppressLint
-import android.content.ContentResolver
 import android.content.Context
-import android.os.Bundle
 import android.provider.CallLog.Calls
 import com.simplemobiletools.commons.extensions.*
 import com.simplemobiletools.commons.helpers.*
@@ -15,10 +13,11 @@ import com.simplemobiletools.dialer.models.RecentCall
 
 class RecentsHelper(private val context: Context) {
     private val COMPARABLE_PHONE_NUMBER_LENGTH = 9
+    private val QUERY_LIMIT = "200"
 
     @SuppressLint("MissingPermission")
     fun getRecentCalls(groupSubsequentCalls: Boolean, callback: (ArrayList<RecentCall>) -> Unit) {
-        val privateCursor = context.getMyContactsCursor(false, true)?.loadInBackground()
+        val privateCursor = context.getMyContactsCursor(false, true)
         ensureBackgroundThread {
             if (!context.hasPermission(PERMISSION_READ_CALL_LOG)) {
                 callback(ArrayList())
@@ -53,31 +52,39 @@ class RecentsHelper(private val context: Context) {
             Calls.DATE,
             Calls.DURATION,
             Calls.TYPE,
-            "phone_account_address"
+            Calls.PHONE_ACCOUNT_ID
         )
 
-        val numberToSimIDMap = HashMap<String, Int>()
+        val accountIdToSimIDMap = HashMap<String, Int>()
         context.getAvailableSIMCardLabels().forEach {
-            numberToSimIDMap[it.phoneNumber] = it.id
+            accountIdToSimIDMap[it.handle.id] = it.id
         }
 
-        val cursor = if (isRPlus()) {
-            val bundle = Bundle().apply {
-                putStringArray(ContentResolver.QUERY_ARG_SORT_COLUMNS, arrayOf(Calls._ID))
-                putInt(ContentResolver.QUERY_ARG_SORT_DIRECTION, ContentResolver.QUERY_SORT_DIRECTION_DESCENDING)
-                putInt(ContentResolver.QUERY_ARG_LIMIT, 100)
-            }
-
-            context.contentResolver.query(uri, projection, bundle, null)
+        val cursor = if (isNougatPlus()) {
+            // https://issuetracker.google.com/issues/175198972?pli=1#comment6
+            val limitedUri = uri.buildUpon()
+                .appendQueryParameter(Calls.LIMIT_PARAM_KEY, QUERY_LIMIT)
+                .build()
+            val sortOrder = "${Calls._ID} DESC"
+            context.contentResolver.query(limitedUri, projection, null, null, sortOrder)
         } else {
-            val sortOrder = "${Calls._ID} DESC LIMIT 100"
+            val sortOrder = "${Calls._ID} DESC LIMIT $QUERY_LIMIT"
             context.contentResolver.query(uri, projection, null, null, sortOrder)
+        }
+
+        val contactsWithMultipleNumbers = contacts.filter { it.phoneNumbers.size > 1 }
+        val numbersToContactIDMap = HashMap<String, Int>()
+        contactsWithMultipleNumbers.forEach { contact ->
+            contact.phoneNumbers.forEach { phoneNumber ->
+                numbersToContactIDMap[phoneNumber.value] = contact.contactId
+                numbersToContactIDMap[phoneNumber.normalizedNumber] = contact.contactId
+            }
         }
 
         if (cursor?.moveToFirst() == true) {
             do {
                 val id = cursor.getIntValue(Calls._ID)
-                val number = cursor.getStringValue(Calls.NUMBER)
+                val number = cursor.getStringValue(Calls.NUMBER) ?: continue
                 var name = cursor.getStringValue(Calls.CACHED_NAME)
                 if (name == null || name.isEmpty()) {
                     name = number
@@ -90,8 +97,8 @@ class RecentsHelper(private val context: Context) {
                         val normalizedNumber = number.normalizePhoneNumber()
                         if (normalizedNumber!!.length >= COMPARABLE_PHONE_NUMBER_LENGTH) {
                             name = contacts.firstOrNull { contact ->
-                                val curNumber = contact.phoneNumbers.first().normalizePhoneNumber()
-                                if (curNumber!!.length >= COMPARABLE_PHONE_NUMBER_LENGTH) {
+                                val curNumber = contact.phoneNumbers.first().normalizedNumber
+                                if (curNumber.length >= COMPARABLE_PHONE_NUMBER_LENGTH) {
                                     if (curNumber.substring(curNumber.length - COMPARABLE_PHONE_NUMBER_LENGTH) == normalizedNumber.substring(normalizedNumber.length - COMPARABLE_PHONE_NUMBER_LENGTH)) {
                                         contactsNumbersMap[number] = contact.name
                                         return@firstOrNull true
@@ -129,21 +136,35 @@ class RecentsHelper(private val context: Context) {
 
                 val duration = cursor.getIntValue(Calls.DURATION)
                 val type = cursor.getIntValue(Calls.TYPE)
-                val accountAddress = cursor.getStringValue("phone_account_address")
-                val simID = numberToSimIDMap[accountAddress] ?: 1
+                val accountId = cursor.getStringValue(Calls.PHONE_ACCOUNT_ID)
+                val simID = accountIdToSimIDMap[accountId] ?: -1
                 val neighbourIDs = ArrayList<Int>()
-                val recentCall = RecentCall(id, number, name, photoUri, startTS, duration, type, neighbourIDs, simID)
+                var specificNumber = ""
+                var specificType = ""
+
+                val contactIdWithMultipleNumbers = numbersToContactIDMap[number]
+                if (contactIdWithMultipleNumbers != null) {
+                    val specificPhoneNumber =
+                        contacts.firstOrNull { it.contactId == contactIdWithMultipleNumbers }?.phoneNumbers?.firstOrNull { it.value == number }
+                    if (specificPhoneNumber != null) {
+                        specificNumber = specificPhoneNumber.value
+                        specificType = context.getPhoneNumberTypeText(specificPhoneNumber.type, specificPhoneNumber.label)
+                    }
+                }
+
+                val recentCall = RecentCall(id, number, name, photoUri, startTS, duration, type, neighbourIDs, simID, specificNumber, specificType)
 
                 // if we have multiple missed calls from the same number, show it just once
-                if (!groupSubsequentCalls || "$number$name" != previousRecentCallFrom) {
+                if (!groupSubsequentCalls || "$number$name$simID" != previousRecentCallFrom) {
                     recentCalls.add(recentCall)
                 } else {
                     recentCalls.lastOrNull()?.neighbourIDs?.add(id)
                 }
 
-                previousRecentCallFrom = "$number$name"
+                previousRecentCallFrom = "$number$name$simID"
             } while (cursor.moveToNext())
         }
+        cursor?.close()
 
         val blockedNumbers = context.getBlockedNumbers()
         recentCalls = recentCalls.filter { !context.isNumberBlocked(it.phoneNumber, blockedNumbers) }.toMutableList() as ArrayList<RecentCall>
