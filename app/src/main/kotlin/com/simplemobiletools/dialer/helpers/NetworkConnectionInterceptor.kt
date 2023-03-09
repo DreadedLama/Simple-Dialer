@@ -15,7 +15,13 @@ class NetworkConnectionInterceptor(context: Context) : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
 
         if (!isInternetAvailable()) {
-            val noInternetResponse = "{ \"name\":\"$NO_INTERNET\"}"
+            val noInternetResponse = "{" +
+                "  \"data\": [" +
+                "    {" +
+                "      \"name\": \"$NO_INTERNET\"" +
+                "    }" +
+                "  ]" +
+                "}"
 
             val responseBody = noInternetResponse.toResponseBody("application/json".toMediaTypeOrNull())
             return Response.Builder()

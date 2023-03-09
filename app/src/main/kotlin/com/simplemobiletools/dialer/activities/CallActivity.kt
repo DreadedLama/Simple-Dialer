@@ -540,6 +540,7 @@ class CallActivity : SimpleActivity() {
         hold_status_label.beVisibleIf(isOnHold)
     }
 
+    @SuppressLint("SetTextI18n")
     private fun updateOtherPersonsInfo(avatar: Bitmap?) {
         if (callContact == null) {
             return
@@ -558,19 +559,18 @@ class CallActivity : SimpleActivity() {
             val viewModelFactory = MainViewModelFactory(trueCallerService)
             viewModel = ViewModelProvider(this, viewModelFactory).get(MainViewModel::class.java)
             networkConnectionInterceptor?.let { viewModel.getResponse(callContact!!.number, authorizationToken, it) }
-            viewModel.myResponse.observe(this, { response ->
-                if (response.isSuccessful) {
-                    if (response.body()?.name!! == NO_INTERNET) {
+            viewModel.trueCallerResponse.observe(this) { response ->
+                if (response.isNotEmpty()) {
+                    if (response[0].name == NO_INTERNET) {
                         caller_number.beGone() //No Internet
                     } else {
-                        val name = TRUECALLER + response.body()?.name!!
-                        caller_name_label.text = name
+                        caller_name_label.text = TRUECALLER + response[0].name
                         caller_number.text = callContact!!.number
                     }
                 } else {
                     caller_number.beGone() //No response from truecaller
                 }
-            })
+            }
         }
 
         if (avatar != null) {

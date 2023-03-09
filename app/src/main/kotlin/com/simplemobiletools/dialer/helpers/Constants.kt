@@ -29,9 +29,11 @@ const val ACCEPT_CALL = PATH + "accept_call"
 const val DECLINE_CALL = PATH + "decline_call"
 
 //TrueCaller
-const val BASE_URL = "https://webapi-noneu.truecaller.com"
+const val BASE_URL = "https://webapi-noneu.truecaller.com/"
+const val ADVANCED_URL = "https://search5-noneu.truecaller.com/v2/"
 const val NO_INTERNET = "No Internet"
 const val TRUECALLER = "Truecaller - "
 const val COUNTRY_CODE = "in"
+const val TYPE = "1"
 
 const val DIALPAD_TONE_LENGTH_MS = 150L // The length of DTMF tones in milliseconds
