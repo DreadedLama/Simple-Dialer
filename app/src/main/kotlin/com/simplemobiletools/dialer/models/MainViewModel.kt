@@ -1,4 +1,4 @@
-package com.simplemobiletools.dialer
+package com.simplemobiletools.dialer.models
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel

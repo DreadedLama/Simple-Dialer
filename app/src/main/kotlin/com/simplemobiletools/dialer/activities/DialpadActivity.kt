@@ -26,11 +26,12 @@ import com.simplemobiletools.commons.models.SimpleContact
 import com.simplemobiletools.dialer.R
 import com.simplemobiletools.dialer.adapters.ContactsAdapter
 import com.simplemobiletools.dialer.extensions.*
-import com.simplemobiletools.dialer.helpers.DIALPAD_TONE_LENGTH_MS
-import com.simplemobiletools.dialer.helpers.ToneGeneratorHelper
+import com.simplemobiletools.dialer.helpers.*
 import com.simplemobiletools.dialer.models.SpeedDial
+import kotlinx.android.synthetic.main.activity_call.*
 import kotlinx.android.synthetic.main.activity_dialpad.*
 import kotlinx.android.synthetic.main.activity_dialpad.dialpad_holder
+import kotlinx.android.synthetic.main.activity_dialpad.dialpad_input
 import kotlinx.android.synthetic.main.dialpad.*
 import java.util.*
 import kotlin.math.roundToInt
@@ -160,9 +161,10 @@ class DialpadActivity : SimpleActivity() {
             truecaller_search_button.setImageDrawable(searchIcon)
             truecaller_search_button.background.applyColorFilter(properPrimaryColor)
             truecaller_search_button.beVisible()
-//            truecaller_search_button.setOnClickListener {
-//                initCall(dialpad_input.value, 1)
-//            }
+            val truecallerNumberInfoHelper = TruecallerNumberInfoHelper();
+            truecaller_search_button.setOnClickListener {
+                truecallerNumberInfoHelper.initTruecallerNumberInfo(dialpad_input.value, this)
+            }
             R.drawable.ic_phone_one_vector
         }else {
             R.drawable.ic_phone_vector

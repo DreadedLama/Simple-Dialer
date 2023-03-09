@@ -26,8 +26,8 @@ import androidx.lifecycle.ViewModelProvider
 import com.simplemobiletools.commons.extensions.*
 import com.simplemobiletools.commons.helpers.*
 import com.simplemobiletools.commons.models.SimpleListItem
-import com.simplemobiletools.dialer.MainViewModel
-import com.simplemobiletools.dialer.MainViewModelFactory
+import com.simplemobiletools.dialer.models.MainViewModel
+import com.simplemobiletools.dialer.models.MainViewModelFactory
 import com.simplemobiletools.dialer.R
 import com.simplemobiletools.dialer.dialogs.DynamicBottomSheetChooserDialog
 import com.simplemobiletools.dialer.extensions.*
@@ -80,8 +80,6 @@ class CallActivity : SimpleActivity() {
 
         updateTextColors(call_holder)
         initButtons()
-        networkConnectionInterceptor = NetworkConnectionInterceptor(this)
-
         audioManager.mode = AudioManager.MODE_IN_CALL
         addLockScreenFlags()
         CallManager.addListener(callCallback)
@@ -557,10 +555,11 @@ class CallActivity : SimpleActivity() {
             val trueCallerService = TrueCallerService()
             val authorizationToken = "Bearer "+ this.config.getTrueCallerToken()
             val viewModelFactory = MainViewModelFactory(trueCallerService)
+            networkConnectionInterceptor = NetworkConnectionInterceptor(this)
             viewModel = ViewModelProvider(this, viewModelFactory).get(MainViewModel::class.java)
             networkConnectionInterceptor?.let { viewModel.getResponse(callContact!!.number, authorizationToken, it) }
             viewModel.trueCallerResponse.observe(this) { response ->
-                if (response.isNotEmpty()) {
+                if (null!=response && response.isNotEmpty()) {
                     if (response[0].name == NO_INTERNET) {
                         caller_number.beGone() //No Internet
                     } else {
