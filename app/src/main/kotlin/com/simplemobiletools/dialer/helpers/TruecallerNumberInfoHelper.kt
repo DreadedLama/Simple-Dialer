@@ -1,8 +1,11 @@
 package com.simplemobiletools.dialer.helpers
 
 import android.annotation.SuppressLint
+import android.view.View
+import android.widget.ImageView
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.ViewModelProvider
+import com.bumptech.glide.Glide
 import com.simplemobiletools.commons.extensions.*
 import com.simplemobiletools.dialer.R
 import com.simplemobiletools.dialer.activities.DialpadActivity
@@ -30,7 +33,11 @@ class TruecallerNumberInfoHelper : SimpleActivity() {
                 if (null != response && response.isNotEmpty()) {
                     if (response[0].name != NO_INTERNET) {
                         val view = activity.layoutInflater.inflate(R.layout.activity_view_number_truecaller_info, null).apply {
-                            truecaller_number_info.setText("Name: "+response[0].name)
+                            truecaller_number.text = response[0].name
+                            if(null != response[0].image) {
+                                val imageView: ImageView = findViewById<View>(R.id.truecaller_image) as ImageView
+                                Glide.with(activity).load(response[0].image).into(imageView)
+                            }
                         }
                         activity.getAlertDialogBuilder()
                             .setPositiveButton(com.simplemobiletools.commons.R.string.ok, null)

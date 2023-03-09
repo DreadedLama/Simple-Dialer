@@ -1,9 +1,9 @@
 package com.simplemobiletools.dialer.services
 
-import com.simplemobiletools.dialer.helpers.*
+import com.simplemobiletools.dialer.helpers.COUNTRY_CODE
 import com.simplemobiletools.dialer.helpers.NetworkConnectionInterceptor
+import com.simplemobiletools.dialer.helpers.TYPE
 import com.simplemobiletools.dialer.interfaces.TrueCallerApi
-import com.simplemobiletools.dialer.models.TrueCallerDataResponse
 import com.simplemobiletools.dialer.models.TrueCallerResponse
 import retrofit2.Response
 

@@ -1,16 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:id="@+id/dialog_holder"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/truecaller_info_holder"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:paddingTop="@dimen/activity_margin">
 
-        <TextView
-            android:id="@+id/truecaller_number_info"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/activity_margin"
-            android:layout_marginEnd="@dimen/activity_margin"
-            style="@style/SettingsSectionLabelStyle"/>
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/truecaller_image"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        app:civ_border_width="3dp"
+        app:civ_border_color="#ffffff"
+        android:src="@drawable/ic_person_vector"/>
+
+    <TextView
+        android:id="@+id/truecaller_number"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/activity_margin"
+        android:layout_marginEnd="@dimen/activity_margin"
+        android:paddingTop="@dimen/section_margin"
+        android:layout_below="@+id/truecaller_image"
+        android:gravity="center"
+        android:textSize="18dp"
+        style="@style/SettingsSectionLabelStyle"/>
 
 </RelativeLayout>
