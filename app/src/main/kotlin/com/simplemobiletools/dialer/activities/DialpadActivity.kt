@@ -155,6 +155,18 @@ class DialpadActivity : SimpleActivity() {
         } else {
             R.drawable.ic_phone_vector
         }
+        if(this.config.getTrueCallerToken()?.isNotEmpty() == true) {
+            val searchIcon = resources.getColoredDrawableWithColor(R.drawable.ic_search_vector, properPrimaryColor.getContrastColor())
+            truecaller_search_button.setImageDrawable(searchIcon)
+            truecaller_search_button.background.applyColorFilter(properPrimaryColor)
+            truecaller_search_button.beVisible()
+//            truecaller_search_button.setOnClickListener {
+//                initCall(dialpad_input.value, 1)
+//            }
+            R.drawable.ic_phone_one_vector
+        }else {
+            R.drawable.ic_phone_vector
+        }
 
         val callIcon = resources.getColoredDrawableWithColor(callIconId, properPrimaryColor.getContrastColor())
         dialpad_call_button.setImageDrawable(callIcon)

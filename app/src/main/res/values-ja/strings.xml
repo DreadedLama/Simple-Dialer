@@ -20,6 +20,7 @@
     <!-- TrueCaller auth Token -->
     <string name="truecaller_auth_token">Truecaller Auth Token</string>
     <string name="token">Token</string>
+    <string name="search_number">Search Number</string>
 
     <string name="asterisk">アスタリスク</string>
     <string name="hashtag">ハッシュタグ</string>

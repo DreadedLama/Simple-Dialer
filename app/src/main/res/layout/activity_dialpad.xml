@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/dialpad_coordinator"
+                                                     xmlns:tools="http://schemas.android.com/tools" android:id="@+id/dialpad_coordinator"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -51,13 +51,13 @@
 
         <com.reddit.indicatorfastscroll.FastScrollerView
             android:id="@+id/letter_fastscroller"
-            android:layout_width="32dp"
-            android:layout_height="0dp"
+            android:layout_width="27dp"
+            android:layout_height="263dp"
             android:gravity="top"
             android:paddingTop="@dimen/medium_margin"
             app:layout_constraintBottom_toTopOf="@+id/dialpad_divider"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/dialpad_list" />
+            app:layout_constraintTop_toTopOf="@+id/dialpad_list"/>
 
         <com.reddit.indicatorfastscroll.FastScrollerThumbView
             android:id="@+id/letter_fastscroller_thumb"
@@ -139,6 +139,23 @@
             app:layout_constraintEnd_toStartOf="@+id/dialpad_call_button"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/dialpad_call_button" />
+
+        <ImageView
+            android:id="@+id/truecaller_search_button"
+            android:layout_width="@dimen/dialpad_button_size_small"
+            android:layout_height="@dimen/dialpad_button_size_small"
+            android:layout_marginBottom="@dimen/activity_margin"
+            android:background="@drawable/circle_button_background_ripple"
+            android:contentDescription="@string/search_number"
+            android:elevation="@dimen/medium_margin"
+            android:padding="@dimen/normal_margin"
+            android:src="@drawable/ic_search_vector"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/dialpad_call_button"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/dialpad_call_button"
+             />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

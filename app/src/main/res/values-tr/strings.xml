@@ -20,6 +20,8 @@
     <!-- TrueCaller auth Token -->
     <string name="truecaller_auth_token">Truecaller Auth Token</string>
     <string name="token">Token</string>
+    <string name="search_number">Search Number</string>
+
     <string name="asterisk">Yıldız işareti</string>
     <string name="hashtag">Kare işareti</string>
     <string name="call_number">Numarayı ara</string>
