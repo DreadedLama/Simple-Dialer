@@ -25,31 +25,37 @@ class TruecallerNumberInfoHelper : SimpleActivity() {
 
     @SuppressLint("SetTextI18n")
     fun initTruecallerNumberInfo(number: String, activity: DialpadActivity) {
+
         if (number.isNotEmpty()) {
+
             val networkConnectionInterceptor = NetworkConnectionInterceptor(activity)
             val viewModel: MainViewModel = ViewModelProvider(activity, MainViewModelFactory(TrueCallerService()))[MainViewModel::class.java]
             networkConnectionInterceptor.let { viewModel.getResponse(number, "Bearer " + activity.config.getTrueCallerToken(), it) }
+
             viewModel.trueCallerResponse.observe(activity) { response ->
-                if (null != response && response.isNotEmpty()) {
-                    if (response[0].name != NO_INTERNET) {
-                        val view = activity.layoutInflater.inflate(R.layout.activity_view_number_truecaller_info, null).apply {
-                            truecaller_number.text = response[0].name
-                            if(null != response[0].image) {
-                                val imageView: ImageView = findViewById<View>(R.id.truecaller_image) as ImageView
-                                Glide.with(activity).load(response[0].image).into(imageView)
-                            }
-                        }
-                        activity.getAlertDialogBuilder()
-                            .setPositiveButton(com.simplemobiletools.commons.R.string.ok, null)
-                            .setNegativeButton(null, null)
-                            .apply {
-                                activity.setupDialogStuff(view, this) { alertDialog ->
-                                    alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
-                                        alertDialog.dismiss()
-                                    }
+
+                if ((null != response && response.isNotEmpty()) && (response[0].name != NO_INTERNET)) {
+                    val view = activity.layoutInflater.inflate(R.layout.activity_view_number_truecaller_info, null).apply {
+                        truecaller_number.text = if (null == response[0].name) "Unknown" else response[0].name
+
+                        val imageView: ImageView = findViewById<View>(R.id.truecaller_image) as ImageView
+                        Glide
+                            .with(activity)
+                            .load(response[0].image)
+                            .placeholder(imageView.drawable)
+                            .into(imageView)
+                    }
+                    activity.getAlertDialogBuilder()
+                        .setPositiveButton(com.simplemobiletools.commons.R.string.ok, null)
+                        .setNegativeButton(null, null)
+                        .apply {
+                            activity.setupDialogStuff(view, this) { alertDialog ->
+                                alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
+                                    alertDialog.dismiss()
+                                    activity.viewModelStore.clear()
                                 }
                             }
-                    }
+                        }
                 }
             }
         }

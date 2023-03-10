@@ -14,7 +14,7 @@ class NetworkConnectionInterceptor(context: Context) : Interceptor {
 
     override fun intercept(chain: Interceptor.Chain): Response {
 
-        if (!isInternetAvailable() || isInternetAvailable()) {
+        if (!isInternetAvailable()) {
             val noInternetResponse = "{" +
                 "  \"data\": [" +
                 "    {" +
