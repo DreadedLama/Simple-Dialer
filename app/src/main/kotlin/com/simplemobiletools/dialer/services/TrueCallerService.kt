@@ -4,7 +4,7 @@ import com.simplemobiletools.dialer.helpers.COUNTRY_CODE
 import com.simplemobiletools.dialer.helpers.NetworkConnectionInterceptor
 import com.simplemobiletools.dialer.helpers.TYPE
 import com.simplemobiletools.dialer.interfaces.TrueCallerApi
-import com.simplemobiletools.dialer.models.TrueCallerResponse
+import com.simplemobiletools.dialer.models.truecaller.TrueCallerResponse
 import retrofit2.Response
 
 class TrueCallerService {

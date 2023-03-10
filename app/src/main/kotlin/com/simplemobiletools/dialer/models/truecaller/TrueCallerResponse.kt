@@ -1,4 +1,4 @@
-package com.simplemobiletools.dialer.models
+package com.simplemobiletools.dialer.models.truecaller
 
 data class TrueCallerResponse (
     val data: List<TrueCallerDataResponse>,

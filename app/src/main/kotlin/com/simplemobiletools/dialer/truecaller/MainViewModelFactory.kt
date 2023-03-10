@@ -1,4 +1,4 @@
-package com.simplemobiletools.dialer.models
+package com.simplemobiletools.dialer.truecaller
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider

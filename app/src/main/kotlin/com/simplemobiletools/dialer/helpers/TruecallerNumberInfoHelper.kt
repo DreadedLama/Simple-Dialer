@@ -11,8 +11,8 @@ import com.simplemobiletools.dialer.R
 import com.simplemobiletools.dialer.activities.DialpadActivity
 import com.simplemobiletools.dialer.activities.SimpleActivity
 import com.simplemobiletools.dialer.extensions.config
-import com.simplemobiletools.dialer.models.MainViewModel
-import com.simplemobiletools.dialer.models.MainViewModelFactory
+import com.simplemobiletools.dialer.truecaller.MainViewModel
+import com.simplemobiletools.dialer.truecaller.MainViewModelFactory
 import com.simplemobiletools.dialer.services.TrueCallerService
 import kotlinx.android.synthetic.main.activity_dialpad.*
 import kotlinx.android.synthetic.main.activity_settings.*
@@ -35,16 +35,32 @@ class TruecallerNumberInfoHelper : SimpleActivity() {
             viewModel.trueCallerResponse.observe(activity) { response ->
 
                 if ((null != response && response.isNotEmpty()) && (response[0].name != NO_INTERNET)) {
+                    val truecallerResponse = response[0]
                     val view = activity.layoutInflater.inflate(R.layout.activity_view_number_truecaller_info, null).apply {
-                        truecaller_number.text = if (null == response[0].name) "Unknown" else response[0].name
-
+                        truecaller_name.text = if (null == truecallerResponse.name) "Unknown" else truecallerResponse.name
                         val imageView: ImageView = findViewById<View>(R.id.truecaller_image) as ImageView
                         Glide
                             .with(activity)
-                            .load(response[0].image)
+                            .load(truecallerResponse.image)
                             .placeholder(imageView.drawable)
                             .into(imageView)
+
+                        if(null != truecallerResponse.addresses) {
+                            val city = truecallerResponse.addresses[0].city
+                            if (null != city) {
+                                truecaller_city.text = city
+                                truecaller_city.beVisible()
+                            }
+                        }
+                        if(null != truecallerResponse.phones) {
+                            val carrier = truecallerResponse.phones[0].carrier
+                            if (null != carrier) {
+                                truecaller_carrier.text = carrier
+                                truecaller_carrier.beVisible()
+                            }
+                        }
                     }
+
                     activity.getAlertDialogBuilder()
                         .setPositiveButton(com.simplemobiletools.commons.R.string.ok, null)
                         .setNegativeButton(null, null)

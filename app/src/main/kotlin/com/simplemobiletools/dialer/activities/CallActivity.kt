@@ -26,8 +26,8 @@ import androidx.lifecycle.ViewModelProvider
 import com.simplemobiletools.commons.extensions.*
 import com.simplemobiletools.commons.helpers.*
 import com.simplemobiletools.commons.models.SimpleListItem
-import com.simplemobiletools.dialer.models.MainViewModel
-import com.simplemobiletools.dialer.models.MainViewModelFactory
+import com.simplemobiletools.dialer.truecaller.MainViewModel
+import com.simplemobiletools.dialer.truecaller.MainViewModelFactory
 import com.simplemobiletools.dialer.R
 import com.simplemobiletools.dialer.dialogs.DynamicBottomSheetChooserDialog
 import com.simplemobiletools.dialer.extensions.*

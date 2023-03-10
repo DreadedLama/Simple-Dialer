@@ -3,7 +3,7 @@ package com.simplemobiletools.dialer.interfaces
 
 import com.simplemobiletools.dialer.helpers.ADVANCED_URL
 import com.simplemobiletools.dialer.helpers.NetworkConnectionInterceptor
-import com.simplemobiletools.dialer.models.TrueCallerResponse
+import com.simplemobiletools.dialer.models.truecaller.TrueCallerResponse
 import okhttp3.OkHttpClient
 import retrofit2.Response
 import retrofit2.Retrofit
