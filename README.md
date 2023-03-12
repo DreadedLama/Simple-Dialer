@@ -50,6 +50,7 @@ Token is the value of key "id". It will look similar to -
 ```` 
 a1i01--TQkyvDkO-VW8akLyvbyPBFxr11Fi_KOD1Sv1RGv7UPMJV-KU9C62xo4nd
 ```` 
+Once you get the token, you can uninstall the Truecaller App.
 
 
 Input this auth token in Simple Dialer app.
