@@ -61,7 +61,7 @@ Once token is added, in subsequent calls(incoming/outgoing), simple dialer will 
 <img alt="App image" src="fastlane/metadata/android/en-US/images/raw_screenshots/app_5.png" width="30%">
 </div>
 
-Also, upon adding the token, a search icon will appear in the dialpad which can be used directly to fetch the number details from truecaller. The Name, City and Carrier provider info will be fetched and displayed from truecaller if available.
+Also, upon adding the token, a search icon will appear in the dialpad which can be used directly to fetch the number details from truecaller. The Name, Image, City and Carrier provider info will be fetched and displayed from truecaller if available.
 
 <div style="display:flex;">
 <img alt="App image" src="fastlane/metadata/android/en-US/images/raw_screenshots/search.png" width="30%">
