@@ -18,7 +18,7 @@
     android:src="@drawable/ic_person_vector"/>
 
     <LinearLayout
-    android:id="@+id/sorting_dialog_holder"
+    android:id="@+id/truecaller_info_dialog_holder"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"

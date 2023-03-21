@@ -14,10 +14,10 @@ class MainViewModel(private val trueCallerService: TrueCallerService) : ViewMode
 
     val trueCallerResponse: MutableLiveData<List<TrueCallerDataResponse>> = MutableLiveData()
 
-    fun getResponse(mobileNumber: String, authorizationToken: String, networkConnectionInterceptor: NetworkConnectionInterceptor) {
+    fun getResponse(countryCode: String, mobileNumber: String, authorizationToken: String, networkConnectionInterceptor: NetworkConnectionInterceptor) {
         viewModelScope.launch {
             val response: Response<TrueCallerResponse> =
-                trueCallerService.getTrueCallerResponse(mobileNumber, authorizationToken, networkConnectionInterceptor)
+                trueCallerService.getTrueCallerResponse(countryCode, mobileNumber, authorizationToken, networkConnectionInterceptor)
             trueCallerResponse.value = response.body()?.data
         }
     }

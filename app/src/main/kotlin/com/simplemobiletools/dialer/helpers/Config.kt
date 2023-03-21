@@ -59,6 +59,14 @@ class Config(context: Context) : BaseConfig(context) {
     fun getTrueCallerToken(): String? {
         return prefs.getString(TRUECALLER_TOKEN, "")
     }
+
+    fun saveTrueCallerCountryCode(trueCallerCountryCode: String) {
+        prefs.edit().putString(TRUECALLER_COUNTRY_CODE, trueCallerCountryCode).apply()
+    }
+
+    fun getTrueCallerCountryCode(): String? {
+        return prefs.getString(TRUECALLER_COUNTRY_CODE, "")
+    }
     var disableSwipeToAnswer: Boolean
         get() = prefs.getBoolean(DISABLE_SWIPE_TO_ANSWER, false)
         set(disableSwipeToAnswer) = prefs.edit().putBoolean(DISABLE_SWIPE_TO_ANSWER, disableSwipeToAnswer).apply()

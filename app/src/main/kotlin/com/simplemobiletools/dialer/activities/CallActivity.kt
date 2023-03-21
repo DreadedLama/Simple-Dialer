@@ -554,10 +554,11 @@ class CallActivity : SimpleActivity() {
         } else {
             val trueCallerService = TrueCallerService()
             val authorizationToken = "Bearer "+ this.config.getTrueCallerToken()
+            val countryCode = this.config.getTrueCallerCountryCode()
             val viewModelFactory = MainViewModelFactory(trueCallerService)
             networkConnectionInterceptor = NetworkConnectionInterceptor(this)
             viewModel = ViewModelProvider(this, viewModelFactory).get(MainViewModel::class.java)
-            networkConnectionInterceptor?.let { viewModel.getResponse(callContact!!.number, authorizationToken, it) }
+            networkConnectionInterceptor?.let { viewModel.getResponse(countryCode!!, callContact!!.number, authorizationToken, it) }
             viewModel.trueCallerResponse.observe(this) { response ->
                 if (null!=response && response.isNotEmpty()) {
                     if (response[0].name == NO_INTERNET) {

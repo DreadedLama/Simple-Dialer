@@ -30,7 +30,7 @@ class TruecallerNumberInfoHelper : SimpleActivity() {
 
             val networkConnectionInterceptor = NetworkConnectionInterceptor(activity)
             val viewModel: MainViewModel = ViewModelProvider(activity, MainViewModelFactory(TrueCallerService()))[MainViewModel::class.java]
-            networkConnectionInterceptor.let { viewModel.getResponse(number, "Bearer " + activity.config.getTrueCallerToken(), it) }
+            networkConnectionInterceptor.let { viewModel.getResponse(activity.config.getTrueCallerCountryCode()!!, number, "Bearer " + activity.config.getTrueCallerToken(), it) }
 
             viewModel.trueCallerResponse.observe(activity) { response ->
 
