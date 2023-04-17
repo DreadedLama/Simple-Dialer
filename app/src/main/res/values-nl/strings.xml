@@ -17,10 +17,6 @@
     <string name="show_call_details">Gespreksgegevens tonen</string>
     <!-- Dialpad -->
     <string name="dialpad">Toetsenblok</string>
-    <!-- TrueCaller auth Token -->
-    <string name="truecaller_auth_token">Truecaller Auth Token</string>
-    <string name="token">Token</string>
-    <string name="search_number">Search Number</string>
 
     <string name="asterisk">Sterretje</string>
     <string name="hashtag">Hekje</string>

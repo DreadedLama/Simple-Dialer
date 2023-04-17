@@ -17,10 +17,6 @@
     <string name="show_call_details">Arama ayrıntılarını göster</string>
     <!-- Dialpad -->
     <string name="dialpad">Tuş takımı</string>
-    <!-- TrueCaller auth Token -->
-    <string name="truecaller_auth_token">Truecaller Auth Token</string>
-    <string name="token">Token</string>
-    <string name="search_number">Search Number</string>
 
     <string name="asterisk">Yıldız işareti</string>
     <string name="hashtag">Kare işareti</string>

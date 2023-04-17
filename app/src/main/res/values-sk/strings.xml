@@ -18,11 +18,6 @@
     <!-- Dialpad -->
     <string name="dialpad">Číselník</string>
 
-    <!-- TrueCaller auth Token -->
-    <string name="truecaller_auth_token">Truecaller Auth Token</string>
-    <string name="token">Token</string>
-    <string name="search_number">Search Number</string>
-
     <string name="asterisk">Hviezdička</string>
     <string name="hashtag">Mriežka</string>
     <string name="call_number">Zavolať číslo</string>

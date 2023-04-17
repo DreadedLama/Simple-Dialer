@@ -17,10 +17,6 @@
     <string name="show_call_details">Προβολή λεπτομερειών κλήσης</string>
     <!-- Dialpad -->
     <string name="dialpad">Πληκτρολόγιο κλήσης</string>
-    <!-- TrueCaller auth Token -->
-    <string name="truecaller_auth_token">Truecaller Auth Token</string>
-    <string name="token">Token</string>
-    <string name="search_number">Search Number</string>
 
     <string name="asterisk">Αστερίσκος</string>
     <string name="hashtag">Ετικέτα</string>

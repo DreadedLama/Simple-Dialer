@@ -17,10 +17,6 @@
     <string name="show_call_details">Ukázat detaily hovoru</string>
     <!-- Dialpad -->
     <string name="dialpad">Číselník</string>
-    <!-- TrueCaller auth Token -->
-    <string name="truecaller_auth_token">Truecaller Auth Token</string>
-    <string name="token">Token</string>
-    <string name="search_number">Search Number</string>
 
     <string name="asterisk">Hvězdička</string>
     <string name="hashtag">Mřížka</string>

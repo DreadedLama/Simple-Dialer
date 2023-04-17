@@ -17,10 +17,6 @@
     <string name="show_call_details">Показать сведения о вызове</string>
     <!-- Dialpad -->
     <string name="dialpad">Номеронабиратель</string>
-    <!-- TrueCaller auth Token -->
-    <string name="truecaller_auth_token">Truecaller Auth Token</string>
-    <string name="token">Token</string>
-    <string name="search_number">Search Number</string>
 
     <string name="asterisk">Звёздочка</string>
     <string name="hashtag">Хэштег</string>

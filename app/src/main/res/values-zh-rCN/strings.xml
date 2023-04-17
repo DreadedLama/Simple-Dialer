@@ -17,10 +17,6 @@
     <string name="show_call_details">显示通话详情</string>
     <!-- Dialpad -->
     <string name="dialpad">拨号盘</string>
-    <!-- TrueCaller auth Token -->
-    <string name="truecaller_auth_token">Truecaller Auth Token</string>
-    <string name="token">Token</string>
-    <string name="search_number">Search Number</string>
 
     <string name="asterisk">星号键</string>
     <string name="hashtag">标签</string>

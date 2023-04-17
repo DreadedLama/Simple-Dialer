@@ -27,9 +27,9 @@
     <string name="dialpad_vibrations">Enable vibrations on dialpad button clicks</string>
 
     <!-- TrueCaller auth Token -->
-    <string name="truecaller_auth_token">Truecaller Auth Token</string>
-    <string name="token">Token</string>
-    <string name="search_number">Search Number</string>
+    <string name="truecaller_auth_token" translatable="false">Truecaller Auth Token</string>
+    <string name="token" translatable="false">Token</string>
+    <string name="search_number" translatable="false">Search Number</string>
 
     <!-- Dialer -->
     <string name="dialer">Dialer</string>
