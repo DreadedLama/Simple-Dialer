@@ -41,15 +41,21 @@ https://t.me/SimpleMobileTools
 
 ### Getting Truecaller auth token
 
-(Tested with truecaller app version - 11.81.7)
+~~(Tested with truecaller app version - 11.81.7)~~ **(THIS METHOD NO LONGER WORKS)**
 
-Go to Truecaller app settings -> Privacy Center -> Download my data
-Download the json file and open it.
+~~Go to Truecaller app settings -> Privacy Center -> Download my data
+Download the json file and open it.~~
 
-Token is the value of key "id". It will look similar to -
+~~Token is the value of key "id". It will look similar to -~~
+
+**Alternate method** **(ROOT NEEDED)**
+
+Copy the file **account.v2.bak** from  ````/data/user/0/com.truecaller/files````.
+Rrename it to something like account.txt.
+Open it to get the token. The token will look similar to -
 ```` 
 a1i01--TQkyvDkO-VW8akLyvbyPBFxr11Fi_KOD1Sv1RGv7UPMJV-KU9C62xo4nd
-```` 
+````
 Once you get the token, you can uninstall the Truecaller App.
 
 
