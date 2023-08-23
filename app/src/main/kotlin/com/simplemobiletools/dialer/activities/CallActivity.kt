@@ -26,8 +26,6 @@ import androidx.lifecycle.ViewModelProvider
 import com.simplemobiletools.commons.extensions.*
 import com.simplemobiletools.commons.helpers.*
 import com.simplemobiletools.commons.models.SimpleListItem
-import com.simplemobiletools.dialer.truecaller.MainViewModel
-import com.simplemobiletools.dialer.truecaller.MainViewModelFactory
 import com.simplemobiletools.dialer.R
 import com.simplemobiletools.dialer.dialogs.DynamicBottomSheetChooserDialog
 import com.simplemobiletools.dialer.extensions.*
@@ -35,6 +33,8 @@ import com.simplemobiletools.dialer.helpers.*
 import com.simplemobiletools.dialer.models.AudioRoute
 import com.simplemobiletools.dialer.models.CallContact
 import com.simplemobiletools.dialer.services.TrueCallerService
+import com.simplemobiletools.dialer.truecaller.MainViewModel
+import com.simplemobiletools.dialer.truecaller.MainViewModelFactory
 import kotlinx.android.synthetic.main.activity_call.*
 import kotlinx.android.synthetic.main.dialpad.*
 import kotlin.math.max
@@ -95,6 +95,10 @@ class CallActivity : SimpleActivity() {
         super.onResume()
         updateState()
         updateNavigationBarColor(getProperBackgroundColor())
+
+        if (config.isUsingSystemTheme) {
+            updateStatusbarColor(getProperBackgroundColor())
+        }
     }
 
     override fun onDestroy() {
@@ -408,7 +412,7 @@ class CallActivity : SimpleActivity() {
     }
 
     private fun dialpadPressed(char: Char) {
-        CallManager.keypad(this, char)
+        CallManager.keypad(char)
         dialpad_input.addCharacter(char)
     }
 
@@ -448,6 +452,9 @@ class CallActivity : SimpleActivity() {
 
     private fun updateCallAudioState(route: AudioRoute?) {
         if (route != null) {
+            isMicrophoneOff = audioManager.isMicrophoneMute
+            updateMicrophoneButton()
+
             isSpeakerOn = route == AudioRoute.SPEAKER
             val supportedAudioRoutes = CallManager.getSupportedAudioRoutes()
             call_toggle_speaker.apply {
@@ -477,9 +484,13 @@ class CallActivity : SimpleActivity() {
 
     private fun toggleMicrophone() {
         isMicrophoneOff = !isMicrophoneOff
-        toggleButtonColor(call_toggle_microphone, isMicrophoneOff)
         audioManager.isMicrophoneMute = isMicrophoneOff
         CallManager.inCallService?.setMuted(isMicrophoneOff)
+        updateMicrophoneButton()
+    }
+
+    private fun updateMicrophoneButton() {
+        toggleButtonColor(call_toggle_microphone, isMicrophoneOff)
         call_toggle_microphone.contentDescription = getString(if (isMicrophoneOff) R.string.turn_microphone_on else R.string.turn_microphone_off)
     }
 
@@ -538,7 +549,6 @@ class CallActivity : SimpleActivity() {
         hold_status_label.beVisibleIf(isOnHold)
     }
 
-    @SuppressLint("SetTextI18n")
     private fun updateOtherPersonsInfo(avatar: Bitmap?) {
         if (callContact == null) {
             return

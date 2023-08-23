@@ -2,10 +2,15 @@ package com.simplemobiletools.dialer.activities
 
 import android.os.Bundle
 import com.google.gson.Gson
+import com.simplemobiletools.commons.dialogs.RadioGroupDialog
+import com.simplemobiletools.commons.extensions.getMyContactsCursor
 import com.simplemobiletools.commons.extensions.updateTextColors
+import com.simplemobiletools.commons.helpers.ContactsHelper
+import com.simplemobiletools.commons.helpers.MyContactsContentProvider
 import com.simplemobiletools.commons.helpers.NavigationIcon
-import com.simplemobiletools.commons.helpers.SimpleContactsHelper
-import com.simplemobiletools.commons.models.SimpleContact
+import com.simplemobiletools.commons.models.PhoneNumber
+import com.simplemobiletools.commons.models.RadioItem
+import com.simplemobiletools.commons.models.contacts.Contact
 import com.simplemobiletools.dialer.R
 import com.simplemobiletools.dialer.adapters.SpeedDialAdapter
 import com.simplemobiletools.dialer.dialogs.SelectContactDialog
@@ -15,8 +20,8 @@ import com.simplemobiletools.dialer.models.SpeedDial
 import kotlinx.android.synthetic.main.activity_manage_speed_dial.*
 
 class ManageSpeedDialActivity : SimpleActivity(), RemoveSpeedDialListener {
-    private var allContacts = ArrayList<SimpleContact>()
-    private var speedDialValues = ArrayList<SpeedDial>()
+    private var allContacts = mutableListOf<Contact>()
+    private var speedDialValues = mutableListOf<SpeedDial>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         isMaterialActivity = true
@@ -28,8 +33,14 @@ class ManageSpeedDialActivity : SimpleActivity(), RemoveSpeedDialListener {
 
         speedDialValues = config.getSpeedDialValues()
         updateAdapter()
-        SimpleContactsHelper(this).getAvailableContacts(false) { contacts ->
-            allContacts = contacts
+
+        ContactsHelper(this).getContacts(showOnlyContactsWithNumbers = true) { contacts ->
+            allContacts.addAll(contacts)
+
+            val privateCursor = getMyContactsCursor(false, true)
+            val privateContacts = MyContactsContentProvider.getContacts(this, privateCursor)
+            allContacts.addAll(privateContacts)
+            allContacts.sort()
         }
 
         updateTextColors(manage_speed_dial_scrollview)
@@ -53,11 +64,28 @@ class ManageSpeedDialActivity : SimpleActivity(), RemoveSpeedDialListener {
             }
 
             SelectContactDialog(this, allContacts) { selectedContact ->
-                speedDialValues.first { it.id == clickedContact.id }.apply {
-                    displayName = selectedContact.name
-                    number = selectedContact.phoneNumbers.first().normalizedNumber
+                if (selectedContact.phoneNumbers.size > 1) {
+                    val radioItems = selectedContact.phoneNumbers.mapIndexed { index, item ->
+                        RadioItem(index, item.normalizedNumber, item)
+                    }
+                    val userPhoneNumbersList = selectedContact.phoneNumbers.map { it.value }
+                    val checkedItemId = userPhoneNumbersList.indexOf(clickedContact.number)
+                    RadioGroupDialog(this, ArrayList(radioItems), checkedItemId = checkedItemId) { selectedValue ->
+                        val selectedNumber = selectedValue as PhoneNumber
+                        speedDialValues.first { it.id == clickedContact.id }.apply {
+                            displayName = selectedContact.getNameToDisplay()
+                            number = selectedNumber.normalizedNumber
+                        }
+                        updateAdapter()
+                    }
+                } else {
+                    speedDialValues.first { it.id == clickedContact.id }.apply {
+                        displayName = selectedContact.getNameToDisplay()
+                        number = selectedContact.phoneNumbers.first().normalizedNumber
+                    }
+                    updateAdapter()
                 }
-                updateAdapter()
+
             }
         }.apply {
             speed_dial_list.adapter = this

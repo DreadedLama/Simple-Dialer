@@ -7,13 +7,11 @@ import android.graphics.drawable.Icon
 import android.net.Uri
 import android.text.TextUtils
 import android.util.TypedValue
-import android.view.Menu
-import android.view.MotionEvent
-import android.view.View
-import android.view.ViewGroup
-import android.widget.FrameLayout
+import android.view.*
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -21,14 +19,11 @@ import com.simplemobiletools.commons.adapters.MyRecyclerViewAdapter
 import com.simplemobiletools.commons.dialogs.ConfirmationDialog
 import com.simplemobiletools.commons.dialogs.FeatureLockedDialog
 import com.simplemobiletools.commons.extensions.*
-import com.simplemobiletools.commons.helpers.PERMISSION_CALL_PHONE
-import com.simplemobiletools.commons.helpers.PERMISSION_WRITE_CONTACTS
-import com.simplemobiletools.commons.helpers.SimpleContactsHelper
-import com.simplemobiletools.commons.helpers.isOreoPlus
+import com.simplemobiletools.commons.helpers.*
 import com.simplemobiletools.commons.interfaces.ItemMoveCallback
 import com.simplemobiletools.commons.interfaces.ItemTouchHelperContract
 import com.simplemobiletools.commons.interfaces.StartReorderDragListener
-import com.simplemobiletools.commons.models.SimpleContact
+import com.simplemobiletools.commons.models.contacts.Contact
 import com.simplemobiletools.commons.views.MyRecyclerView
 import com.simplemobiletools.dialer.R
 import com.simplemobiletools.dialer.activities.SimpleActivity
@@ -41,26 +36,35 @@ import java.util.*
 
 class ContactsAdapter(
     activity: SimpleActivity,
-    var contacts: ArrayList<SimpleContact>,
+    var contacts: MutableList<Contact>,
     recyclerView: MyRecyclerView,
-    val refreshItemsListener: RefreshItemsListener? = null,
     highlightText: String = "",
-    val showDeleteButton: Boolean = true,
+    private val refreshItemsListener: RefreshItemsListener? = null,
+    var viewType: Int = VIEW_TYPE_LIST,
+    private val showDeleteButton: Boolean = true,
     private val enableDrag: Boolean = false,
+    private val allowLongClick: Boolean = true,
     itemClick: (Any) -> Unit
-) : MyRecyclerViewAdapter(activity, recyclerView, itemClick), ItemTouchHelperContract {
+) : MyRecyclerViewAdapter(activity, recyclerView, itemClick),
+    ItemTouchHelperContract, MyRecyclerView.MyZoomListener {
 
     private var textToHighlight = highlightText
-    private var fontSize = activity.getTextSize()
+    var fontSize: Float = activity.getTextSize()
     private var touchHelper: ItemTouchHelper? = null
     private var startReorderDragListener: StartReorderDragListener? = null
     var onDragEndListener: (() -> Unit)? = null
+    var onSpanCountListener: (Int) -> Unit = {}
+
 
     init {
         setupDragListener(true)
 
+        if (recyclerView.layoutManager is GridLayoutManager) {
+            setupZoomListener(this)
+        }
+
         if (enableDrag) {
-            touchHelper = ItemTouchHelper(ItemMoveCallback(this))
+            touchHelper = ItemTouchHelper(ItemMoveCallback(this, viewType == VIEW_TYPE_GRID))
             touchHelper!!.attachToRecyclerView(recyclerView)
 
             startReorderDragListener = object : StartReorderDragListener {
@@ -81,7 +85,7 @@ class ContactsAdapter(
         menu.apply {
             findItem(R.id.cab_call_sim_1).isVisible = hasMultipleSIMs && isOneItemSelected
             findItem(R.id.cab_call_sim_2).isVisible = hasMultipleSIMs && isOneItemSelected
-            findItem(R.id.cab_remove_default_sim).isVisible = isOneItemSelected && activity.config.getCustomSIM(selectedNumber) != ""
+            findItem(R.id.cab_remove_default_sim).isVisible = isOneItemSelected && (activity.config.getCustomSIM(selectedNumber) ?: "") != ""
 
             findItem(R.id.cab_delete).isVisible = showDeleteButton
             findItem(R.id.cab_create_shortcut).title = activity.addLockedLabelIfNeeded(R.string.create_shortcut)
@@ -123,11 +127,21 @@ class ContactsAdapter(
         notifyDataSetChanged()
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = createViewHolder(R.layout.item_contact_without_number, parent)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        val layout = when (viewType) {
+            VIEW_TYPE_GRID -> R.layout.item_contact_without_number_grid
+            else -> R.layout.item_contact_without_number
+        }
+        return createViewHolder(layout, parent)
+    }
+
+    override fun getItemViewType(position: Int): Int {
+        return viewType
+    }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val contact = contacts[position]
-        holder.bindView(contact, true, true) { itemView, layoutPosition ->
+        holder.bindView(contact, true, allowLongClick) { itemView, layoutPosition ->
             setupView(itemView, contact, holder)
         }
         bindViewHolder(holder)
@@ -135,9 +149,9 @@ class ContactsAdapter(
 
     override fun getItemCount() = contacts.size
 
-    fun updateItems(newItems: ArrayList<SimpleContact>, highlightText: String = "") {
+    fun updateItems(newItems: List<Contact>, highlightText: String = "") {
         if (newItems.hashCode() != contacts.hashCode()) {
-            contacts = newItems.clone() as ArrayList<SimpleContact>
+            contacts = ArrayList(newItems)
             textToHighlight = highlightText
             notifyDataSetChanged()
             finishActMode()
@@ -184,7 +198,7 @@ class ContactsAdapter(
         val itemsCnt = selectedKeys.size
         val firstItem = getSelectedItems().firstOrNull() ?: return
         val items = if (itemsCnt == 1) {
-            "\"${firstItem.name}\""
+            "\"${firstItem.getNameToDisplay()}\""
         } else {
             resources.getQuantityString(R.plurals.delete_contacts, itemsCnt, itemsCnt)
         }
@@ -221,12 +235,10 @@ class ContactsAdapter(
         }
     }
 
-    private fun getSelectedItems() = contacts.filter { selectedKeys.contains(it.rawId) } as ArrayList<SimpleContact>
+    private fun getSelectedItems() = contacts.filter { selectedKeys.contains(it.rawId) } as ArrayList<Contact>
 
     private fun getSelectedPhoneNumber(): String? {
-        val numbers = getSelectedItems().firstOrNull()?.phoneNumbers
-        val primaryNumber = numbers?.firstOrNull { it.isPrimary }
-        return primaryNumber?.normalizedNumber ?: numbers?.firstOrNull()?.normalizedNumber
+        return getSelectedItems().firstOrNull()?.getPrimaryNumber()
     }
 
     private fun tryCreateShortcut() {
@@ -242,16 +254,16 @@ class ContactsAdapter(
         val contact = contacts.firstOrNull { selectedKeys.contains(it.rawId) } ?: return
         val manager = activity.shortcutManager
         if (manager.isRequestPinShortcutSupported) {
-            SimpleContactsHelper(activity).getShortcutImage(contact.photoUri, contact.name) { image ->
+            SimpleContactsHelper(activity).getShortcutImage(contact.photoUri, contact.getNameToDisplay()) { image ->
                 activity.runOnUiThread {
                     activity.handlePermission(PERMISSION_CALL_PHONE) { hasPermission ->
                         val action = if (hasPermission) Intent.ACTION_CALL else Intent.ACTION_DIAL
                         val intent = Intent(action).apply {
-                            data = Uri.fromParts("tel", contact.phoneNumbers.first().normalizedNumber, null)
+                            data = Uri.fromParts("tel", getSelectedPhoneNumber(), null)
                         }
 
                         val shortcut = ShortcutInfo.Builder(activity, contact.hashCode().toString())
-                            .setShortLabel(contact.name)
+                            .setShortLabel(contact.getNameToDisplay())
                             .setIcon(Icon.createWithBitmap(image))
                             .setIntent(intent)
                             .build()
@@ -270,18 +282,20 @@ class ContactsAdapter(
         }
     }
 
-    private fun setupView(view: View, contact: SimpleContact, holder: ViewHolder) {
+    private fun setupView(view: View, contact: Contact, holder: ViewHolder) {
         view.apply {
-            findViewById<FrameLayout>(R.id.item_contact_frame).isSelected = selectedKeys.contains(contact.rawId)
+            setupViewBackground(activity)
+            findViewById<ConstraintLayout>(R.id.item_contact_frame).isSelected = selectedKeys.contains(contact.rawId)
             findViewById<TextView>(R.id.item_contact_name).apply {
                 setTextColor(textColor)
                 setTextSize(TypedValue.COMPLEX_UNIT_PX, fontSize)
 
-                text = if (textToHighlight.isEmpty()) contact.name else {
-                    if (contact.name.contains(textToHighlight, true)) {
-                        contact.name.highlightTextPart(textToHighlight, properPrimaryColor)
+                val name = contact.getNameToDisplay()
+                text = if (textToHighlight.isEmpty()) name else {
+                    if (name.contains(textToHighlight, true)) {
+                        name.highlightTextPart(textToHighlight, properPrimaryColor)
                     } else {
-                        contact.name.highlightTextFromNumbers(textToHighlight, properPrimaryColor)
+                        name.highlightTextFromNumbers(textToHighlight, properPrimaryColor)
                     }
                 }
             }
@@ -306,7 +320,7 @@ class ContactsAdapter(
             }
 
             if (!activity.isDestroyed) {
-                SimpleContactsHelper(context).loadContactImage(contact.photoUri, findViewById(R.id.item_contact_image), contact.name)
+                SimpleContactsHelper(context).loadContactImage(contact.photoUri, findViewById(R.id.item_contact_image), contact.getNameToDisplay())
             }
         }
     }
@@ -332,4 +346,27 @@ class ContactsAdapter(
     override fun onRowClear(myViewHolder: ViewHolder?) {
         onDragEndListener?.invoke()
     }
+
+    override fun zoomIn() {
+        val layoutManager = recyclerView.layoutManager
+        if (layoutManager is GridLayoutManager) {
+            val currentSpanCount = layoutManager.spanCount
+            val newSpanCount = (currentSpanCount - 1).coerceIn(1, CONTACTS_GRID_MAX_COLUMNS_COUNT)
+            layoutManager.spanCount = newSpanCount
+            recyclerView.requestLayout()
+            onSpanCountListener(newSpanCount)
+        }
+    }
+
+    override fun zoomOut() {
+        val layoutManager = recyclerView.layoutManager
+        if (layoutManager is GridLayoutManager) {
+            val currentSpanCount = layoutManager.spanCount
+            val newSpanCount = (currentSpanCount + 1).coerceIn(1, CONTACTS_GRID_MAX_COLUMNS_COUNT)
+            layoutManager.spanCount = newSpanCount
+            recyclerView.requestLayout()
+            onSpanCountListener(newSpanCount)
+        }
+    }
+
 }

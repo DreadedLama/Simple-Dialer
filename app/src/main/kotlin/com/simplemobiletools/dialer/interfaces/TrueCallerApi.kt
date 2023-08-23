@@ -1,7 +1,7 @@
 package com.simplemobiletools.dialer.interfaces
 
 
-import com.simplemobiletools.dialer.helpers.ADVANCED_URL
+import com.simplemobiletools.dialer.helpers.TRUECALLER_URL
 import com.simplemobiletools.dialer.helpers.NetworkConnectionInterceptor
 import com.simplemobiletools.dialer.models.truecaller.TrueCallerResponse
 import okhttp3.OkHttpClient
@@ -33,7 +33,7 @@ interface TrueCallerApi {
             val retrofit =
                 Retrofit.Builder()
                     .client(okHttpclient)
-                    .baseUrl(ADVANCED_URL)
+                    .baseUrl(TRUECALLER_URL)
                     .addConverterFactory(GsonConverterFactory.create())
                     .build()
 

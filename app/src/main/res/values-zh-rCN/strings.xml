@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">简单拨号器</string>
     <string name="app_launcher_name">拨号器</string>
@@ -17,7 +16,6 @@
     <string name="show_call_details">显示通话详情</string>
     <!-- Dialpad -->
     <string name="dialpad">拨号盘</string>
-
     <string name="asterisk">星号键</string>
     <string name="hashtag">标签</string>
     <string name="call_number">呼叫号码</string>
@@ -26,9 +24,7 @@
     <!-- Dialer -->
     <string name="dialer">拨号器</string>
     <string name="accept">接听</string>
-    <string name="accept_call">接受通话</string>
     <string name="decline">拒绝</string>
-    <string name="decline_call">拒绝通话</string>
     <string name="unknown_caller">未知呼叫</string>
     <string name="is_calling">正在呼叫…</string>
     <string name="dialing">拨号中…</string>
@@ -73,6 +69,8 @@
     <string name="disable_swipe_to_answer">用点击代替滑动来接听来电</string>
     <string name="show_incoming_calls_full_screen">始终全屏显示来电</string>
     <string name="hide_dialpad_numbers">隐藏拨号盘号码</string>
+    <string name="export_call_history">导出通话记录</string>
+    <string name="import_call_history">导入通话记录</string>
     <!-- FAQ -->
     <string name="faq_1_title">我听到来电声音，但屏幕不亮。我该怎么办\?</string>
     <string name="faq_1_text">这样的问题可能有很多设备和系统的具体原因，很难笼统地说。你应该查看你的设备设置，确保应用在后台时被允许弹出，并允许其显示在其他应用上方。</string>

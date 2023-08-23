@@ -19,6 +19,7 @@ const val DIALPAD_VIBRATION = "dialpad_vibration"
 const val DIALPAD_BEEPS = "dialpad_beeps"
 const val HIDE_DIALPAD_NUMBERS = "hide_dialpad_numbers"
 const val ALWAYS_SHOW_FULLSCREEN = "always_show_fullscreen"
+
 const val ALL_TABS_MASK = TAB_CONTACTS or TAB_FAVORITES or TAB_CALL_HISTORY
 
 val tabsList = arrayListOf(TAB_CONTACTS, TAB_FAVORITES, TAB_CALL_HISTORY)
@@ -27,13 +28,14 @@ private const val PATH = "com.simplemobiletools.dialer.action."
 const val ACCEPT_CALL = PATH + "accept_call"
 const val DECLINE_CALL = PATH + "decline_call"
 
+const val DIALPAD_TONE_LENGTH_MS = 150L // The length of DTMF tones in milliseconds
+
+const val MIN_RECENTS_THRESHOLD = 30
+
 //TrueCaller
-const val BASE_URL = "https://webapi-noneu.truecaller.com/"
-const val ADVANCED_URL = "https://search5-noneu.truecaller.com/v2/"
+const val TRUECALLER_URL = "https://search5-noneu.truecaller.com/v2/"
 const val NO_INTERNET = "No Internet"
 const val TRUECALLER = "Truecaller - "
 const val TRUECALLER_TOKEN = "truecaller_token"
 const val TRUECALLER_COUNTRY_CODE = "truecaller_country_code"
 const val TYPE = "1"
-
-const val DIALPAD_TONE_LENGTH_MS = 150L // The length of DTMF tones in milliseconds

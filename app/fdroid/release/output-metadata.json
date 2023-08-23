@@ -11,8 +11,8 @@
       "type": "SINGLE",
       "filters": [],
       "attributes": [],
-      "versionCode": 50,
-      "versionName": "5.17.3",
+      "versionCode": 56,
+      "versionName": "5.18.0",
       "outputFile": "dialer-fdroid-release.apk"
     }
   ],

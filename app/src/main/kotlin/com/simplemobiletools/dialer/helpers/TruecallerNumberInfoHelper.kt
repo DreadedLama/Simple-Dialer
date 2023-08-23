@@ -11,9 +11,9 @@ import com.simplemobiletools.dialer.R
 import com.simplemobiletools.dialer.activities.DialpadActivity
 import com.simplemobiletools.dialer.activities.SimpleActivity
 import com.simplemobiletools.dialer.extensions.config
+import com.simplemobiletools.dialer.services.TrueCallerService
 import com.simplemobiletools.dialer.truecaller.MainViewModel
 import com.simplemobiletools.dialer.truecaller.MainViewModelFactory
-import com.simplemobiletools.dialer.services.TrueCallerService
 import kotlinx.android.synthetic.main.activity_dialpad.*
 import kotlinx.android.synthetic.main.activity_settings.*
 import kotlinx.android.synthetic.main.activity_view_number_truecaller_info.*
@@ -27,7 +27,6 @@ class TruecallerNumberInfoHelper : SimpleActivity() {
     fun initTruecallerNumberInfo(number: String, activity: DialpadActivity) {
 
         if (number.isNotEmpty()) {
-
             val networkConnectionInterceptor = NetworkConnectionInterceptor(activity)
             val viewModel: MainViewModel = ViewModelProvider(activity, MainViewModelFactory(TrueCallerService()))[MainViewModel::class.java]
             networkConnectionInterceptor.let { viewModel.getResponse(activity.config.getTrueCallerCountryCode()!!, number, "Bearer " + activity.config.getTrueCallerToken(), it) }

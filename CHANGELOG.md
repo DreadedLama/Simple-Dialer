@@ -1,6 +1,49 @@
 Changelog
 ==========
 
+Version 5.18.0 *(2023-06-08)*
+----------------------------
+
+ * Fixed the inability of setting the app as default for handling calls on some devices
+ * Fixed some issues with incoming calls not being shown sometimes
+ * Improved speed dial handling at contacts with multiple numbers
+ * Properly display organization contact names
+ * Added some stability, translation and UX improvements
+
+Version 5.17.8 *(2023-04-19)*
+----------------------------
+
+ * Avoid showing contacts without a phone number
+ * Fixed multiple contact handling related glitches
+ * Added some stability, translation and UX improvements
+
+Version 5.17.7 *(2023-04-12)*
+----------------------------
+
+ * Added some stability, translation and UX improvements
+
+Version 5.17.6 *(2023-04-07)*
+----------------------------
+
+ * Fixed number presses during call
+ * Added some stability, translation and UX improvements
+
+Version 5.17.5 *(2023-03-29)*
+----------------------------
+
+ * Allow filtering contacts
+ * Fix displaying contacts, if name starts with surname
+ * Fixed some right-to-left layout glitches
+ * Added some stability, translation and UX improvements
+
+Version 5.17.4 *(2023-03-21)*
+----------------------------
+
+ * Allow filtering contacts
+ * Fix displaying contacts, if name starts with surname
+ * Fixed some right-to-left layout glitches
+ * Added some stability, translation and UX improvements
+
 Version 5.17.3 *(2023-01-12)*
 ----------------------------
 

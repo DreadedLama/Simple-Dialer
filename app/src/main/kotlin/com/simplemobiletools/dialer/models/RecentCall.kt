@@ -3,10 +3,24 @@ package com.simplemobiletools.dialer.models
 import android.telephony.PhoneNumberUtils
 import com.simplemobiletools.commons.extensions.normalizePhoneNumber
 
-// model used at displaying recent calls, for contacts with multiple numbers specifify the number and type
+/**
+ * Used at displaying recent calls.
+ * For contacts with multiple numbers specify the number and type
+ */
+@kotlinx.serialization.Serializable
 data class RecentCall(
-    var id: Int, var phoneNumber: String, var name: String, var photoUri: String, var startTS: Int, var duration: Int, var type: Int,
-    var neighbourIDs: ArrayList<Int>, val simID: Int, var specificNumber: String, var specificType: String
+    val id: Int,
+    val phoneNumber: String,
+    val name: String,
+    val photoUri: String,
+    val startTS: Int,
+    val duration: Int,
+    val type: Int,
+    val neighbourIDs: MutableList<Int>,
+    val simID: Int,
+    val specificNumber: String,
+    val specificType: String,
+    val isUnknownNumber: Boolean,
 ) {
     fun doesContainPhoneNumber(text: String): Boolean {
         val normalizedText = text.normalizePhoneNumber()

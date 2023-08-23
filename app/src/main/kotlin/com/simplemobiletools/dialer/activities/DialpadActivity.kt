@@ -20,13 +20,16 @@ import android.view.ViewConfiguration
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.isVisible
 import com.reddit.indicatorfastscroll.FastScrollItemIndicator
+import com.simplemobiletools.commons.dialogs.CallConfirmationDialog
 import com.simplemobiletools.commons.extensions.*
 import com.simplemobiletools.commons.helpers.*
-import com.simplemobiletools.commons.models.SimpleContact
+import com.simplemobiletools.commons.models.contacts.Contact
 import com.simplemobiletools.dialer.R
 import com.simplemobiletools.dialer.adapters.ContactsAdapter
 import com.simplemobiletools.dialer.extensions.*
-import com.simplemobiletools.dialer.helpers.*
+import com.simplemobiletools.dialer.helpers.DIALPAD_TONE_LENGTH_MS
+import com.simplemobiletools.dialer.helpers.ToneGeneratorHelper
+import com.simplemobiletools.dialer.helpers.TruecallerNumberInfoHelper
 import com.simplemobiletools.dialer.models.SpeedDial
 import kotlinx.android.synthetic.main.activity_call.*
 import kotlinx.android.synthetic.main.activity_dialpad.*
@@ -37,7 +40,7 @@ import java.util.*
 import kotlin.math.roundToInt
 
 class DialpadActivity : SimpleActivity() {
-    private var allContacts = ArrayList<SimpleContact>()
+    private var allContacts = ArrayList<Contact>()
     private var speedDialValues = ArrayList<SpeedDial>()
     private val russianCharsMap = HashMap<Char, Int>()
     private var hasRussianLocale = false
@@ -138,9 +141,11 @@ class DialpadActivity : SimpleActivity() {
         dialpad_call_button.setOnClickListener { initCall(dialpad_input.value, 0) }
         dialpad_input.onTextChangeListener { dialpadValueChanged(it) }
         dialpad_input.requestFocus()
-
-        SimpleContactsHelper(this).getAvailableContacts(false) { gotContacts(it) }
         dialpad_input.disableKeyboard()
+
+        ContactsHelper(this).getContacts(showOnlyContactsWithNumbers = true) { allContacts ->
+            gotContacts(allContacts)
+        }
 
         val properPrimaryColor = getProperPrimaryColor()
         val callIconId = if (areMultipleSIMsAvailable()) {
@@ -156,6 +161,7 @@ class DialpadActivity : SimpleActivity() {
         } else {
             R.drawable.ic_phone_vector
         }
+
         if(this.config.getTrueCallerToken()?.isNotEmpty() == true) {
             val searchIcon = resources.getColoredDrawableWithColor(R.drawable.ic_search_vector, properPrimaryColor.getContrastColor())
             truecaller_search_button.setImageDrawable(searchIcon)
@@ -233,10 +239,10 @@ class DialpadActivity : SimpleActivity() {
         dialpad_input.setText("")
     }
 
-    private fun gotContacts(newContacts: ArrayList<SimpleContact>) {
+    private fun gotContacts(newContacts: ArrayList<Contact>) {
         allContacts = newContacts
 
-        val privateContacts = MyContactsContentProvider.getSimpleContacts(this, privateCursor)
+        val privateContacts = MyContactsContentProvider.getContacts(this, privateCursor)
         if (privateContacts.isNotEmpty()) {
             allContacts.addAll(privateContacts)
             allContacts.sort()
@@ -274,7 +280,7 @@ class DialpadActivity : SimpleActivity() {
 
             if (hasRussianLocale) {
                 var currConvertedName = ""
-                convertedName.toLowerCase().forEach { char ->
+                convertedName.lowercase(Locale.getDefault()).forEach { char ->
                     val convertedChar = russianCharsMap.getOrElse(char) { char }
                     currConvertedName += convertedChar
                 }
@@ -284,20 +290,32 @@ class DialpadActivity : SimpleActivity() {
             it.doesContainPhoneNumber(text) || (convertedName.contains(text, true))
         }.sortedWith(compareBy {
             !it.doesContainPhoneNumber(text)
-        }).toMutableList() as ArrayList<SimpleContact>
+        }).toMutableList() as ArrayList<Contact>
 
         letter_fastscroller.setupWithRecyclerView(dialpad_list, { position ->
             try {
-                val name = filtered[position].name
+                val name = filtered[position].getNameToDisplay()
                 val character = if (name.isNotEmpty()) name.substring(0, 1) else ""
-                FastScrollItemIndicator.Text(character.toUpperCase(Locale.getDefault()))
+                FastScrollItemIndicator.Text(character.uppercase(Locale.getDefault()))
             } catch (e: Exception) {
                 FastScrollItemIndicator.Text("")
             }
         })
 
-        ContactsAdapter(this, filtered, dialpad_list, null, text) {
-            startCallIntent((it as SimpleContact).phoneNumbers.first().normalizedNumber)
+        ContactsAdapter(
+            activity = this,
+            contacts = filtered,
+            recyclerView = dialpad_list,
+            highlightText = text
+        ) {
+            val contact = it as Contact
+            if (config.showCallConfirmation) {
+                CallConfirmationDialog(this@DialpadActivity, contact.getNameToDisplay()) {
+                    startCallIntent(contact.getPrimaryNumber() ?: return@CallConfirmationDialog)
+                }
+            } else {
+                startCallIntent(contact.getPrimaryNumber() ?: return@ContactsAdapter)
+            }
         }.apply {
             dialpad_list.adapter = this
         }
@@ -316,9 +334,21 @@ class DialpadActivity : SimpleActivity() {
     private fun initCall(number: String = dialpad_input.value, handleIndex: Int) {
         if (number.isNotEmpty()) {
             if (handleIndex != -1 && areMultipleSIMsAvailable()) {
-                callContactWithSim(number, handleIndex == 0)
+                if (config.showCallConfirmation) {
+                    CallConfirmationDialog(this, number) {
+                        callContactWithSim(number, handleIndex == 0)
+                    }
+                } else {
+                    callContactWithSim(number, handleIndex == 0)
+                }
             } else {
-                startCallIntent(number)
+                if (config.showCallConfirmation) {
+                    CallConfirmationDialog(this, number) {
+                        startCallIntent(number)
+                    }
+                } else {
+                    startCallIntent(number)
+                }
             }
         }
     }
@@ -398,12 +428,14 @@ class DialpadActivity : SimpleActivity() {
                         }, longPressTimeout)
                     }
                 }
+
                 MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
                     stopDialpadTone(char)
                     if (longClickable) {
                         longPressHandler.removeCallbacksAndMessages(null)
                     }
                 }
+
                 MotionEvent.ACTION_MOVE -> {
                     val viewContainsTouchEvent = if (event.rawX.isNaN() || event.rawY.isNaN()) {
                         false

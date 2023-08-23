@@ -13,7 +13,7 @@ Supported Speed dialing makes calling your favorite contacts with this true phon
 
 To help you manage your calls quickly the phone number app also supports favorite contacts and creating shortcuts of any contact on the home screen.
 
-It comes with material design and dark theme by default, provides great user experience for easy usage.
+It comes with material design and dark theme by default, provides great user experience for easy usage. The lack of internet access gives you more privacy, security and stability than other apps.
 ###### It uses internet only when using truecaller api to fetch caller details. Use of truecaller to fetch details is completely optional. App works perfectly well without internet too.
 
 Contains no ads or unnecessary permissions. It is fully opensource, provides customizable colors. Keeping track of call logs for different phone number is also a plus point of this app.

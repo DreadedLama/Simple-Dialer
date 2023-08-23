@@ -16,22 +16,25 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.viewpager.widget.ViewPager
 import com.google.android.material.snackbar.Snackbar
+import com.simplemobiletools.commons.dialogs.ChangeViewTypeDialog
 import com.simplemobiletools.commons.dialogs.ConfirmationDialog
+import com.simplemobiletools.commons.dialogs.PermissionRequiredDialog
+import com.simplemobiletools.commons.dialogs.RadioGroupDialog
 import com.simplemobiletools.commons.extensions.*
 import com.simplemobiletools.commons.helpers.*
 import com.simplemobiletools.commons.models.FAQItem
-import com.simplemobiletools.commons.models.SimpleContact
+import com.simplemobiletools.commons.models.RadioItem
+import com.simplemobiletools.commons.models.contacts.Contact
 import com.simplemobiletools.dialer.BuildConfig
 import com.simplemobiletools.dialer.R
 import com.simplemobiletools.dialer.adapters.ViewPagerAdapter
 import com.simplemobiletools.dialer.dialogs.ChangeSortingDialog
+import com.simplemobiletools.dialer.dialogs.FilterContactSourcesDialog
 import com.simplemobiletools.dialer.extensions.config
 import com.simplemobiletools.dialer.extensions.launchCreateNewContactIntent
 import com.simplemobiletools.dialer.fragments.FavoritesFragment
 import com.simplemobiletools.dialer.fragments.MyViewPagerFragment
-import com.simplemobiletools.dialer.helpers.OPEN_DIAL_PAD_AT_LAUNCH
-import com.simplemobiletools.dialer.helpers.RecentsHelper
-import com.simplemobiletools.dialer.helpers.tabsList
+import com.simplemobiletools.dialer.helpers.*
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_contacts.*
 import kotlinx.android.synthetic.main.fragment_favorites.*
@@ -41,7 +44,9 @@ import me.grantland.widget.AutofitHelper
 class MainActivity : SimpleActivity() {
     private var launchedDialer = false
     private var storedShowTabs = 0
-    var cachedContacts = ArrayList<SimpleContact>()
+    private var storedFontSize = 0
+    private var storedStartNameWithSurname = false
+    var cachedContacts = ArrayList<Contact>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         isMaterialActivity = true
@@ -71,19 +76,19 @@ class MainActivity : SimpleActivity() {
 
             handleNotificationPermission { granted ->
                 if (!granted) {
-                    toast(R.string.no_post_notifications_permissions)
+                    PermissionRequiredDialog(this, R.string.allow_notifications_incoming_calls, { openNotificationSettings() })
                 }
             }
         } else {
             launchSetDefaultDialerIntent()
         }
 
-        if (isQPlus() && config.blockUnknownNumbers) {
+        if (isQPlus() && (config.blockUnknownNumbers || config.blockHiddenNumbers)) {
             setDefaultCallerIdApp()
         }
 
         setupTabs()
-        SimpleContact.sorting = config.sorting
+        Contact.sorting = config.sorting
     }
 
     override fun onResume() {
@@ -106,8 +111,22 @@ class MainActivity : SimpleActivity() {
             it?.setupColors(getProperTextColor(), getProperPrimaryColor(), getProperPrimaryColor())
         }
 
+        val configStartNameWithSurname = config.startNameWithSurname
+        if (storedStartNameWithSurname != configStartNameWithSurname) {
+            contacts_fragment?.startNameWithSurnameChanged(configStartNameWithSurname)
+            favorites_fragment?.startNameWithSurnameChanged(configStartNameWithSurname)
+            storedStartNameWithSurname = config.startNameWithSurname
+        }
+
         if (!main_menu.isSearchOpen) {
             refreshItems(true)
+        }
+
+        val configFontSize = config.fontSize
+        if (storedFontSize != configFontSize) {
+            getAllFragments().forEach {
+                it?.fontSizeChanged()
+            }
         }
 
         checkShortcuts()
@@ -119,6 +138,7 @@ class MainActivity : SimpleActivity() {
     override fun onPause() {
         super.onPause()
         storedShowTabs = config.showTabs
+        storedStartNameWithSurname = config.startNameWithSurname
         config.lastUsedViewPagerPage = view_pager.currentItem
     }
 
@@ -130,6 +150,7 @@ class MainActivity : SimpleActivity() {
         } else if (requestCode == REQUEST_CODE_SET_DEFAULT_CALLER_ID && resultCode != Activity.RESULT_OK) {
             toast(R.string.must_make_default_caller_id_app, length = Toast.LENGTH_LONG)
             baseConfig.blockUnknownNumbers = false
+            baseConfig.blockHiddenNumbers = false
         }
     }
 
@@ -157,6 +178,8 @@ class MainActivity : SimpleActivity() {
             findItem(R.id.clear_call_history).isVisible = currentFragment == recents_fragment
             findItem(R.id.sort).isVisible = currentFragment != recents_fragment
             findItem(R.id.create_new_contact).isVisible = currentFragment == contacts_fragment
+            findItem(R.id.change_view_type).isVisible = currentFragment == favorites_fragment
+            findItem(R.id.column_count).isVisible = currentFragment == favorites_fragment && config.viewType == VIEW_TYPE_GRID
             findItem(R.id.more_apps_from_us).isVisible = !resources.getBoolean(R.bool.hide_google_relations)
         }
     }
@@ -181,12 +204,38 @@ class MainActivity : SimpleActivity() {
                 R.id.clear_call_history -> clearCallHistory()
                 R.id.create_new_contact -> launchCreateNewContactIntent()
                 R.id.sort -> showSortingDialog(showCustomSorting = getCurrentFragment() is FavoritesFragment)
+                R.id.filter -> showFilterDialog()
                 R.id.more_apps_from_us -> launchMoreAppsFromUsIntent()
                 R.id.settings -> launchSettings()
+                R.id.change_view_type -> changeViewType()
+                R.id.column_count -> changeColumnCount()
                 R.id.about -> launchAbout()
                 else -> return@setOnMenuItemClickListener false
             }
             return@setOnMenuItemClickListener true
+        }
+    }
+
+    private fun changeColumnCount() {
+        val items = ArrayList<RadioItem>()
+        for (i in 1..CONTACTS_GRID_MAX_COLUMNS_COUNT) {
+            items.add(RadioItem(i, resources.getQuantityString(R.plurals.column_counts, i, i)))
+        }
+
+        val currentColumnCount = config.contactsGridColumnCount
+        RadioGroupDialog(this, ArrayList(items), currentColumnCount) {
+            val newColumnCount = it as Int
+            if (currentColumnCount != newColumnCount) {
+                config.contactsGridColumnCount = newColumnCount
+                favorites_fragment?.columnCountChanged()
+            }
+        }
+    }
+
+    private fun changeViewType() {
+        ChangeViewTypeDialog(this) {
+            refreshMenuItems()
+            favorites_fragment?.refreshItems()
         }
     }
 
@@ -202,7 +251,7 @@ class MainActivity : SimpleActivity() {
     }
 
     private fun clearCallHistory() {
-        val confirmationText = "${getString(R.string.remove_confirmation)}\n\n${getString(R.string.cannot_be_undone)}"
+        val confirmationText = "${getString(R.string.clear_history_confirmation)}\n\n${getString(R.string.cannot_be_undone)}"
         ConfirmationDialog(this, confirmationText) {
             RecentsHelper(this).removeAllRecentCalls(this) {
                 runOnUiThread {
@@ -259,9 +308,9 @@ class MainActivity : SimpleActivity() {
 
     private fun getInactiveTabIndexes(activeIndex: Int) = (0 until main_tabs_holder.tabCount).filter { it != activeIndex }
 
-    private fun getSelectedTabDrawableIds(): ArrayList<Int> {
+    private fun getSelectedTabDrawableIds(): List<Int> {
         val showTabs = config.showTabs
-        val icons = ArrayList<Int>()
+        val icons = mutableListOf<Int>()
 
         if (showTabs and TAB_CONTACTS != 0) {
             icons.add(R.drawable.ic_person_vector)
@@ -373,6 +422,7 @@ class MainActivity : SimpleActivity() {
 
         main_tabs_holder.beGoneIf(main_tabs_holder.tabCount == 1)
         storedShowTabs = config.showTabs
+        storedStartNameWithSurname = config.startNameWithSurname
     }
 
     private fun getTabIcon(position: Int): Drawable {
@@ -417,7 +467,7 @@ class MainActivity : SimpleActivity() {
         }
     }
 
-    private fun refreshFragments() {
+    fun refreshFragments() {
         contacts_fragment?.refreshItems()
         favorites_fragment?.refreshItems()
         recents_fragment?.refreshItems()
@@ -520,7 +570,29 @@ class MainActivity : SimpleActivity() {
         }
     }
 
-    fun cacheContacts(contacts: List<SimpleContact>) {
+    private fun showFilterDialog() {
+        FilterContactSourcesDialog(this) {
+            favorites_fragment?.refreshItems {
+                if (main_menu.isSearchOpen) {
+                    getCurrentFragment()?.onSearchQueryChanged(main_menu.getCurrentQuery())
+                }
+            }
+
+            contacts_fragment?.refreshItems {
+                if (main_menu.isSearchOpen) {
+                    getCurrentFragment()?.onSearchQueryChanged(main_menu.getCurrentQuery())
+                }
+            }
+
+            recents_fragment?.refreshItems {
+                if (main_menu.isSearchOpen) {
+                    getCurrentFragment()?.onSearchQueryChanged(main_menu.getCurrentQuery())
+                }
+            }
+        }
+    }
+
+    fun cacheContacts(contacts: List<Contact>) {
         try {
             cachedContacts.clear()
             cachedContacts.addAll(contacts)

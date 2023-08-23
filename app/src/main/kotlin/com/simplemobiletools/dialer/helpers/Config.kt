@@ -1,20 +1,19 @@
 package com.simplemobiletools.dialer.helpers
 
+import android.content.ComponentName
 import android.content.Context
-import android.net.Uri
+import android.telecom.PhoneAccountHandle
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.simplemobiletools.commons.helpers.BaseConfig
+import com.simplemobiletools.dialer.extensions.getPhoneAccountHandleModel
+import com.simplemobiletools.dialer.extensions.putPhoneAccountHandle
 import com.simplemobiletools.dialer.models.SpeedDial
 
 class Config(context: Context) : BaseConfig(context) {
     companion object {
         fun newInstance(context: Context) = Config(context)
     }
-
-    var speedDial: String
-        get() = prefs.getString(SPEED_DIAL, "")!!
-        set(speedDial) = prefs.edit().putString(SPEED_DIAL, speedDial).apply()
 
     fun getSpeedDialValues(): ArrayList<SpeedDial> {
         val speedDialType = object : TypeToken<List<SpeedDial>>() {}.type
@@ -30,15 +29,30 @@ class Config(context: Context) : BaseConfig(context) {
         return speedDialValues
     }
 
-    fun saveCustomSIM(number: String, SIMlabel: String) {
-        prefs.edit().putString(REMEMBER_SIM_PREFIX + number, Uri.encode(SIMlabel)).apply()
+    fun saveCustomSIM(number: String, handle: PhoneAccountHandle) {
+        prefs.edit().putPhoneAccountHandle(REMEMBER_SIM_PREFIX + number, handle).apply()
     }
 
-    fun getCustomSIM(number: String) = prefs.getString(REMEMBER_SIM_PREFIX + number, "")
+    fun getCustomSIM(number: String): PhoneAccountHandle? {
+        val myPhoneAccountHandle = prefs.getPhoneAccountHandleModel(REMEMBER_SIM_PREFIX + number, null)
+        return if (myPhoneAccountHandle != null) {
+            val packageName = myPhoneAccountHandle.packageName
+            val className = myPhoneAccountHandle.className
+            val componentName = ComponentName(packageName, className)
+            val id = myPhoneAccountHandle.id
+            PhoneAccountHandle(componentName, id)
+        } else {
+            null
+        }
+    }
 
     fun removeCustomSIM(number: String) {
         prefs.edit().remove(REMEMBER_SIM_PREFIX + number).apply()
     }
+
+    var showTabs: Int
+        get() = prefs.getInt(SHOW_TABS, ALL_TABS_MASK)
+        set(showTabs) = prefs.edit().putInt(SHOW_TABS, showTabs).apply()
 
     var groupSubsequentCalls: Boolean
         get() = prefs.getBoolean(GROUP_SUBSEQUENT_CALLS, true)
@@ -52,36 +66,9 @@ class Config(context: Context) : BaseConfig(context) {
         get() = prefs.getBoolean(DISABLE_PROXIMITY_SENSOR, false)
         set(disableProximitySensor) = prefs.edit().putBoolean(DISABLE_PROXIMITY_SENSOR, disableProximitySensor).apply()
 
-    fun saveTrueCallerToken(trueCallerToken: String) {
-        prefs.edit().putString(TRUECALLER_TOKEN, trueCallerToken).apply()
-    }
-
-    fun getTrueCallerToken(): String? {
-        return prefs.getString(TRUECALLER_TOKEN, "")
-    }
-
-    fun saveTrueCallerCountryCode(trueCallerCountryCode: String) {
-        prefs.edit().putString(TRUECALLER_COUNTRY_CODE, trueCallerCountryCode).apply()
-    }
-
-    fun getTrueCallerCountryCode(): String? {
-        return prefs.getString(TRUECALLER_COUNTRY_CODE, "")
-    }
     var disableSwipeToAnswer: Boolean
         get() = prefs.getBoolean(DISABLE_SWIPE_TO_ANSWER, false)
         set(disableSwipeToAnswer) = prefs.edit().putBoolean(DISABLE_SWIPE_TO_ANSWER, disableSwipeToAnswer).apply()
-
-    var showTabs: Int
-        get() = prefs.getInt(SHOW_TABS, ALL_TABS_MASK)
-        set(showTabs) = prefs.edit().putInt(SHOW_TABS, showTabs).apply()
-
-    var favoritesContactsOrder: String
-        get() = prefs.getString(FAVORITES_CONTACTS_ORDER, "")!!
-        set(order) = prefs.edit().putString(FAVORITES_CONTACTS_ORDER, order).apply()
-
-    var isCustomOrderSelected: Boolean
-        get() = prefs.getBoolean(FAVORITES_CUSTOM_ORDER_SELECTED, false)
-        set(selected) = prefs.edit().putBoolean(FAVORITES_CUSTOM_ORDER_SELECTED, selected).apply()
 
     var wasOverlaySnackbarConfirmed: Boolean
         get() = prefs.getBoolean(WAS_OVERLAY_SNACKBAR_CONFIRMED, false)
@@ -102,4 +89,20 @@ class Config(context: Context) : BaseConfig(context) {
     var alwaysShowFullscreen: Boolean
         get() = prefs.getBoolean(ALWAYS_SHOW_FULLSCREEN, false)
         set(alwaysShowFullscreen) = prefs.edit().putBoolean(ALWAYS_SHOW_FULLSCREEN, alwaysShowFullscreen).apply()
+
+    fun saveTrueCallerToken(trueCallerToken: String) {
+        prefs.edit().putString(TRUECALLER_TOKEN, trueCallerToken).apply()
+    }
+
+    fun getTrueCallerToken(): String? {
+        return prefs.getString(TRUECALLER_TOKEN, "")
+    }
+
+    fun saveTrueCallerCountryCode(trueCallerCountryCode: String) {
+        prefs.edit().putString(TRUECALLER_COUNTRY_CODE, trueCallerCountryCode).apply()
+    }
+
+    fun getTrueCallerCountryCode(): String? {
+        return prefs.getString(TRUECALLER_COUNTRY_CODE, "")
+    }
 }

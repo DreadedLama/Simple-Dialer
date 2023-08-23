@@ -1,6 +1,9 @@
-apply plugin: 'com.android.application'
-apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-android-extensions'
+plugins {
+    id 'com.android.application'
+    id 'kotlin-android'
+    id 'kotlin-android-extensions'
+    id 'org.jetbrains.kotlin.plugin.serialization' version "$kotlin_version"
+}
 
 def keystorePropertiesFile = rootProject.file("keystore.properties")
 def keystoreProperties = new Properties()
@@ -9,14 +12,14 @@ if (keystorePropertiesFile.exists()) {
 }
 
 android {
-    compileSdkVersion 33
+    compileSdk 33
 
     defaultConfig {
         applicationId "com.simplemobiletools.dialer"
         minSdkVersion 23
         targetSdkVersion 33
-        versionCode 50
-        versionName "5.17.3"
+        versionCode 56
+        versionName "5.18.0"
         setProperty("archivesBaseName", "dialer")
     }
 
@@ -44,7 +47,7 @@ android {
         }
     }
 
-    flavorDimensions "variants"
+    flavorDimensions = ["variants"]
     productFlavors {
         core {}
         fdroid {}
@@ -62,18 +65,20 @@ android {
 }
 
 dependencies {
-    implementation 'com.github.SimpleMobileTools:Simple-Commons:447adfd5be'
+    implementation 'com.github.SimpleMobileTools:Simple-Commons:91763fe00f'
     implementation 'com.github.tibbi:IndicatorFastScroll:4524cd0b61'
+    implementation 'me.grantland:autofittextview:0.2.1'
+    implementation "org.jetbrains.kotlinx:kotlinx-serialization-json:1.4.1"
 
     implementation 'com.squareup.okhttp3:okhttp:5.0.0-alpha.2'
 
     //Image modifications
-    implementation 'com.github.bumptech.glide:glide:3.7.0'
+    implementation 'com.github.bumptech.glide:glide:4.13.2'
     implementation 'de.hdodenhof:circleimageview:3.1.0'
 
     // Retrofit
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
-    implementation 'com.squareup.retrofit2:converter-gson:2.6.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
     implementation 'com.squareup.okhttp3:logging-interceptor:4.5.0'
 
     //Coroutines

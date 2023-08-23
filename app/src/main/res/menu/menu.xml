@@ -10,6 +10,11 @@
         android:title="@string/sort_by"
         app:showAsAction="always" />
     <item
+        android:id="@+id/filter"
+        android:icon="@drawable/ic_filter_vector"
+        android:title="@string/filter"
+        app:showAsAction="always" />
+    <item
         android:id="@+id/create_new_contact"
         android:icon="@drawable/ic_plus_vector"
         android:title="@string/create_new_contact"
@@ -19,6 +24,16 @@
         android:icon="@drawable/ic_delete_vector"
         android:title="@string/clear_call_history"
         app:showAsAction="always" />
+    <item
+        android:id="@+id/change_view_type"
+        android:icon="@drawable/ic_change_view_vector"
+        android:title="@string/change_view_type"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/column_count"
+        android:icon="@drawable/ic_column_count_vector"
+        android:title="@string/column_count"
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/settings"
         android:icon="@drawable/ic_settings_cog_vector"

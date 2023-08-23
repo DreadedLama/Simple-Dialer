@@ -15,7 +15,12 @@ import com.simplemobiletools.dialer.extensions.getAvailableSIMCardLabels
 import kotlinx.android.synthetic.main.dialog_select_sim.view.*
 
 @SuppressLint("MissingPermission")
-class SelectSIMDialog(val activity: BaseSimpleActivity, val phoneNumber: String, val callback: (handle: PhoneAccountHandle?) -> Unit) {
+class SelectSIMDialog(
+    val activity: BaseSimpleActivity,
+    val phoneNumber: String,
+    onDismiss: () -> Unit = {},
+    val callback: (handle: PhoneAccountHandle?) -> Unit
+) {
     private var dialog: AlertDialog? = null
     private val view = activity.layoutInflater.inflate(R.layout.dialog_select_sim, null)
 
@@ -31,7 +36,7 @@ class SelectSIMDialog(val activity: BaseSimpleActivity, val phoneNumber: String,
             val radioButton = (activity.layoutInflater.inflate(R.layout.radio_button, null) as RadioButton).apply {
                 text = "${index + 1} - ${SIMAccount.label}"
                 id = index
-                setOnClickListener { selectedSIM(SIMAccount.handle, SIMAccount.label) }
+                setOnClickListener { selectedSIM(SIMAccount.handle) }
             }
             radioGroup!!.addView(radioButton, RadioGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT))
         }
@@ -42,11 +47,15 @@ class SelectSIMDialog(val activity: BaseSimpleActivity, val phoneNumber: String,
                     dialog = alertDialog
                 }
             }
+
+        dialog?.setOnDismissListener {
+            onDismiss()
+        }
     }
 
-    private fun selectedSIM(handle: PhoneAccountHandle, label: String) {
+    private fun selectedSIM(handle: PhoneAccountHandle) {
         if (view.select_sim_remember.isChecked) {
-            activity.config.saveCustomSIM(phoneNumber, label)
+            activity.config.saveCustomSIM(phoneNumber, handle)
         }
 
         callback(handle)
